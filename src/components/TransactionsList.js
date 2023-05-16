@@ -30,7 +30,7 @@ export default function TransactionsList() {
         bgcolor: "background.paper",
       }}
       subheader={
-        <ListSubheader component="div" id="list-header" sx={{ fontSize: '28px', color : 'black' }}>
+        <ListSubheader component="div" id="list-header" sx={{ fontSize: '28px', color: 'black' }}>
           Latest Transactions
         </ListSubheader>
       }
