@@ -1,16 +1,13 @@
-import { useState } from "react";
-import { Box, SwipeableDrawer, Typography, IconButton } from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
+import { Box, SwipeableDrawer, Typography } from "@mui/material";
 
-const drawerWidth = 240;
-
-export default function NavBar() {
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+export default function NavBar(props) {
+  const isDrawerOpen = props.isDrawerOpen;
+  const setIsDrawerOpen = props.setIsDrawerOpen;
+  const drawerWidth = props.drawerWidth;
 
   const handleDrawerToggle = () => {
     setIsDrawerOpen(!isDrawerOpen);
   };
-
 
   // list of components to display in the drawer
   const list = (
@@ -23,16 +20,6 @@ export default function NavBar() {
 
   return (
     <>
-      {/* Menu button */}
-      <IconButton
-        color="inherit"
-        aria-label="open drawer"
-        edge="start"
-        onClick={handleDrawerToggle}
-        sx={{ mr: 2, display: { sm: 'none' } }} // 'sm' refers to the breakpoint size corresponding to small screens
-      >
-        <MenuIcon />
-      </IconButton>
       <SwipeableDrawer
         variant="temporary"
         open={isDrawerOpen}
