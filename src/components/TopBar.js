@@ -1,4 +1,4 @@
-import { AppBar, Toolbar, Typography, Button, IconButton, Box } from "@mui/material";
+import { AppBar, Toolbar, Typography, Button, IconButton } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import LoginIcon from "@mui/icons-material/Login";
 
