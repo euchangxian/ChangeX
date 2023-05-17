@@ -2,12 +2,8 @@ import { Box, SwipeableDrawer, Typography } from "@mui/material";
 
 export default function NavBar(props) {
   const isDrawerOpen = props.isDrawerOpen;
-  const setIsDrawerOpen = props.setIsDrawerOpen;
+  const handleDrawerToggle = props.handleDrawerToggle;
   const drawerWidth = props.drawerWidth;
-
-  const handleDrawerToggle = () => {
-    setIsDrawerOpen(!isDrawerOpen);
-  };
 
   // list of components to display in the drawer
   const list = (
@@ -19,7 +15,7 @@ export default function NavBar(props) {
   );
 
   return (
-    <>
+    <Box component="nav" sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }} aria-label="mailbox folders">
       <SwipeableDrawer
         variant="temporary"
         open={isDrawerOpen}
@@ -42,6 +38,6 @@ export default function NavBar(props) {
       >
         {list}
       </SwipeableDrawer>
-    </>
+    </Box>
   );
 }
