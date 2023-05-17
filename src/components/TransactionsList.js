@@ -13,6 +13,7 @@ import BeachAccessIcon from "@mui/icons-material/BeachAccess";
 import Divider from "@mui/material/Divider";
 import Button from "@mui/material/Button";
 import ListSubheader from '@mui/material/ListSubheader';
+import TransactionModalButton from "./TransactionModalButton";
 
 export default function TransactionsList() {
   const redAndRightAlignedText = {
@@ -30,7 +31,11 @@ export default function TransactionsList() {
         bgcolor: "background.paper",
       }}
       subheader={
-        <ListSubheader component="div" id="list-header" sx={{ fontSize: '28px', color: 'black' }}>
+        <ListSubheader
+          component="div"
+          id="list-header"
+          sx={{ fontSize: "28px", color: "black" }}
+        >
           Latest Transactions
         </ListSubheader>
       }
@@ -44,7 +49,7 @@ export default function TransactionsList() {
         </ListItemButton>
       </ListItem>
       <ListItem>
-        <Button>See all transactions</Button>
+        <TransactionModalButton />
       </ListItem>
       {/*The following will require input from a database and should be show through a function. But I will leave them here for now*/}
       <ListItem>
