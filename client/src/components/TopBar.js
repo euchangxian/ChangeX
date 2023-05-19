@@ -14,8 +14,7 @@ export default function TopBar(props) {
         ml: { sm: `${drawerWidth}px` },
       }}
     >
-      {/* I have no idea why the Toolbar or Appbar overflows... */}
-      <Toolbar sx={{ width: "80%" }}>
+      <Toolbar>
         <IconButton
           color="inherit"
           aria-label="open drawer"
