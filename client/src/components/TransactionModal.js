@@ -1,6 +1,5 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
@@ -13,32 +12,19 @@ import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import ListItemText from "@mui/material/ListItemText";
 import ImageIcon from "@mui/icons-material/Image";
-import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  height: 600,
-  width: 450,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-  display: "flex",
-  flexDirection: "column",
-};
+import { styles } from "./styles";
 
-export default function TransactionModalButton() {
+export default function TransactionModal() {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const redAndRightAlignedText = {
-    color: "red",
-    textAlign: "right",
-  };
+  {/* Probably have a page counter state to handle this */}
+  const handleNext = () => console.log("next");
+  const handlePrev = () => console.log("prev");
 
   return (
     <>
@@ -49,8 +35,7 @@ export default function TransactionModalButton() {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        {/*Box in modal*/}
-        <Box sx={style}>
+        <Box sx={styles.boxInModal}>
           <IconButton
             aria-label="delete"
             onClick={handleClose}
@@ -62,6 +47,7 @@ export default function TransactionModalButton() {
           <List
             sx={{
               width: "100%",
+              minHeight: 480,
               maxWidth: 400,
               bgcolor: "background.paper",
             }}
@@ -82,21 +68,36 @@ export default function TransactionModalButton() {
                   <ImageIcon />
                 </Avatar>
               </ListItemAvatar>
-              <ListItemText primary="Photos" secondary="Jan 9, 2014" />
               <ListItemText
-                primaryTypographyProps={{ style: redAndRightAlignedText }}
-                primary="-$30.00"
+                primary="Photos"
+                secondary={
+                  <>
+                    <span>19 Jan 2023</span>
+                    <br />
+                    <span style={{ color: 'red' }}>-$30.00</span>
+                  </>
+                }
               />
               {/*Button needs an onClick to handle delete transaction from database*/}
-              <IconButton
-                aria-label="delete"
-                sx={{ marginLeft: "auto", marginTop: "-16px" }}
-              >
+              <IconButton aria-label="edit">
+                <EditIcon />
+              </IconButton>
+              <IconButton aria-label="delete">
                 <DeleteIcon />
               </IconButton>
             </ListItem>
           </List>
-          {/*Will require a next page/ prev page button*/}
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              paddingBottom: 16,
+            }}
+          >
+            <Button onClick={handlePrev}>Prev</Button>
+            <Button onClick={handleNext}>Next</Button>
+          </Box>
         </Box>
       </Modal>
     </>
