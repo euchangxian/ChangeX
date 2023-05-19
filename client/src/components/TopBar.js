@@ -1,10 +1,19 @@
+import { useState } from "react";
 import { AppBar, Toolbar, Typography, Button, IconButton } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import LoginIcon from "@mui/icons-material/Login";
+import AuthModal from "./AuthModal";
 
 export default function TopBar(props) {
   const handleDrawerToggle = props.handleDrawerToggle;
   const drawerWidth = props.drawerWidth;
+
+  // Logic for handling rendering of AuthModal.
+  const [isAuthModalOpen, setAuthModalOpen] = useState(false);
+  const handleAuthButtonClick = () => {
+    setAuthModalOpen(!isAuthModalOpen);
+  };
+
 
   return (
     <AppBar
@@ -27,10 +36,16 @@ export default function TopBar(props) {
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           ChangeX
         </Typography>
-        {/* Login button */}
-        <Button variant="outlined" color="inherit" startIcon={<LoginIcon />}>
-          Login
+        {/* Sign in button */}
+        <Button
+          variant="outlined"
+          color="inherit"
+          startIcon={<LoginIcon />}
+          onClick={handleAuthButtonClick}
+        >
+          Sign In
         </Button>
+        <AuthModal isAuthModalOpen={isAuthModalOpen} handleAuthButtonClick={handleAuthButtonClick} />
       </Toolbar>
     </AppBar>
   );
