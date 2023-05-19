@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Modal, Box, Typography, TextField, Button, FormControlLabel, Checkbox, Tab, Tabs } from "@mui/material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
-import LockIcon from '@mui/icons-material/Lock';
+import LockIcon from "@mui/icons-material/Lock";
+import AuthForm from "./AuthForm";
 
 const modalStyle = {
   display: 'flex',
@@ -19,64 +20,11 @@ const modalStyle = {
   p: 4,
 };
 
-const formStyle = {
-
-}
-
-const form = (
-  <Box
-    component="form"
-    noValidate
-    autoComplete="off"
-    sx={{
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      width: 320
-    }}
-  >
-    <LockIcon fontSize='large' />
-    <Typography align="center" variant="h5">Sign in</Typography>
-    <TextField
-      margin="normal"
-      required
-      fullWidth
-      id="outlined-required"
-      label="E-Mail Address"
-      variant="filled"
-      sx={{ mx: 'auto' }}
-    />
-    <TextField
-      margin="normal"
-      required
-      fullWidth
-      id="outlined-password-input"
-      label="Password"
-      type="password"
-      autoComplete="current-password"
-      variant="filled"
-    />
-    <FormControlLabel
-      control={<Checkbox value="remember" color="primary" />}
-      label="Remember me"
-    />
-    <Button
-      type="submit"
-      fullWidth
-      variant="contained"
-      sx={{ mt: 3, mb: 2 }}
-    >
-      Sign In
-    </Button>
-  </Box>
-);
-
-
 export default function AuthModal(props) {
   const isAuthModalOpen = props.isAuthModalOpen;
   const handleAuthButtonClick = props.handleAuthButtonClick;
 
-  const [tabIndex, setTabIndex] = useState(0);
+  const [tabIndex, setTabIndex] = useState("Sign In");
 
   const handleChange = (event, newTabIndex) => {
     setTabIndex(newTabIndex);
@@ -93,12 +41,16 @@ export default function AuthModal(props) {
         <TabContext value={tabIndex}>
           <Box sx={{ borderBottom: 1, borderColor: 'divider', width: '100%' }}>
             <TabList onChange={handleChange} centered variant="fullWidth">
-              <Tab label="Sign In" />
-              <Tab label="Sign Up" />
+              <Tab value="Sign In" label="Sign In" />
+              <Tab value="Sign Up" label="Sign Up" />
             </TabList>
           </Box>
-          <TabPanel value={0}>{form}</TabPanel>
-          <TabPanel value={1}>{form}</TabPanel>
+          <TabPanel value={"Sign In"}>
+            <AuthForm formAction={"signIn"} />
+          </TabPanel>
+          <TabPanel value={"Sign Up"}>
+            <AuthForm formAction={"signUp"} />
+          </TabPanel>
         </TabContext>
       </Box>
     </Modal >
