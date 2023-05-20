@@ -11,15 +11,11 @@ import ImageIcon from "@mui/icons-material/Image";
 import WorkIcon from "@mui/icons-material/Work";
 import BeachAccessIcon from "@mui/icons-material/BeachAccess";
 import Divider from "@mui/material/Divider";
-import Button from "@mui/material/Button";
 import ListSubheader from '@mui/material/ListSubheader';
-import TransactionModalButton from "./TransactionModalButton";
+import TransactionModal from "./TransactionModal";
+import { styles } from "./styles"
 
 export default function TransactionsList() {
-  const redAndRightAlignedText = {
-    color: "red",
-    textAlign: "right",
-  };
   const handleAddNewTransaction = () => {
     console.log("hello wolrd");
   };
@@ -49,7 +45,7 @@ export default function TransactionsList() {
         </ListItemButton>
       </ListItem>
       <ListItem>
-        <TransactionModalButton />
+        <TransactionModal />
       </ListItem>
       {/*The following will require input from a database and should be show through a function. But I will leave them here for now*/}
       <ListItem>
@@ -60,7 +56,7 @@ export default function TransactionsList() {
         </ListItemAvatar>
         <ListItemText primary="Photos" secondary="Jan 9, 2014" />
         <ListItemText
-          primaryTypographyProps={{ style: redAndRightAlignedText }}
+          primaryTypographyProps={{ style: styles.redAndRightAlignedText }}
           primary="-$30.00"
         />
       </ListItem>
@@ -73,7 +69,7 @@ export default function TransactionsList() {
         </ListItemAvatar>
         <ListItemText primary="Work" secondary="Jan 7, 2014" />
         <ListItemText
-          primaryTypographyProps={{ style: redAndRightAlignedText }}
+          primaryTypographyProps={{ style: styles.redAndRightAlignedText }}
           primary="-$30.00"
         />
       </ListItem>
@@ -86,7 +82,7 @@ export default function TransactionsList() {
         </ListItemAvatar>
         <ListItemText primary="Vacation" secondary="July 20, 2014" />
         <ListItemText
-          primaryTypographyProps={{ style: redAndRightAlignedText }}
+          primaryTypographyProps={{ style: styles.redAndRightAlignedText }}
           primary="-$30.00"
         />
       </ListItem>
