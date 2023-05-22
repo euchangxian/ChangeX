@@ -1,4 +1,5 @@
 import express from "express";
+import bodyParser from "body-parser";
 import cors from "cors";
 import "./loadEnvironment.mjs";
 import "express-async-errors";
@@ -7,7 +8,8 @@ const PORT = process.env.PORT || 5050;
 const app = express();
 
 app.use(cors());
-app.use(express.json());
+app.use(bodyParser.json());
+app.use(cors());
 
 // TODO: Load routes
 
