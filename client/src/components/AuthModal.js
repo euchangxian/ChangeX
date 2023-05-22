@@ -46,10 +46,10 @@ export default function AuthModal(props) {
             </TabList>
           </Box>
           <TabPanel value={"Sign In"}>
-            <AuthForm formAction={"signIn"} />
+            <AuthForm route={"/signin"} />
           </TabPanel>
           <TabPanel value={"Sign Up"}>
-            <AuthForm formAction={"signUp"} />
+            <AuthForm route={"/signup"} />
           </TabPanel>
         </TabContext>
       </Box>
