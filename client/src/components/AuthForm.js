@@ -6,11 +6,8 @@ import axios from "axios";
 
 export default function AuthForm(props) {
   const isSignIn = props.route === "/signin";
-  const buttonMessage = isSignIn ? "Sign In" : "Sign Up";
-
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const message = isSignIn ? "Sign In" : "Sign Up";
+  const route = isSignIn ? props.route + "/password" : props.route;
 
   // Logic to handle show/hide password.
   const [showPassword, setShowPassword] = useState(false);
@@ -21,22 +18,15 @@ export default function AuthForm(props) {
     event.preventDefault();
   };
 
+
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const handleSubmit = async event => {
     event.preventDefault();
 
-    const formData = isSignIn
-      ? {
-        email: email,
-        password: password
-      }
-      : {
-        username: username,
-        email: email,
-        password: password
-      };
-
     await axios.post("http://localhost:5050" + props.route, {
-      formData
+      username: username,
+      password: password
     });
   }
 
@@ -51,37 +41,21 @@ export default function AuthForm(props) {
         alignItems: 'center',
         width: 320
       }}
-      action={props.route}
-      method="post"
       onSubmit={handleSubmit}
     >
       <LockIcon fontSize='large' />
-      <Typography align="center" variant="h5">Sign in</Typography>
+      <Typography align="center" variant="h5">{message}</Typography>
       {/* Username text field. Only shown in signup form */}
-      {
-        !isSignIn &&
-        <TextField
-          margin="normal"
-          required
-          fullWidth
-          id="username"
-          label="User Name"
-          placeholder="e.g. Axelly"
-          variant="filled"
-          sx={{ mx: 'auto' }}
-          onChange={e => setUsername(e.target.value)}
-        />
-      }
-      {/* Email text field */}
       <TextField
         margin="normal"
         required
         fullWidth
-        id="email"
-        label="E-Mail Address"
+        id="username"
+        label="User Name"
+        placeholder="e.g. Axelly"
         variant="filled"
         sx={{ mx: 'auto' }}
-        onChange={e => setEmail(e.target.value)}
+        onChange={e => setUsername(e.target.value)}
       />
       {/* Password text field */}
       <TextField
@@ -121,7 +95,7 @@ export default function AuthForm(props) {
         variant="contained"
         sx={{ mt: 3, mb: 2 }}
       >
-        {buttonMessage}
+        {message}
       </Button>
     </Box>
   );
