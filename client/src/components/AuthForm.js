@@ -24,10 +24,11 @@ export default function AuthForm(props) {
   const handleSubmit = async event => {
     event.preventDefault();
 
-    await axios.post("http://localhost:5050" + props.route, {
+    await axios.post("http://localhost:5050" + route, {
       username: username,
       password: password
     });
+    setPassword("");
   }
 
   return (
@@ -55,6 +56,7 @@ export default function AuthForm(props) {
         placeholder="e.g. Axelly"
         variant="filled"
         sx={{ mx: 'auto' }}
+        value={username}
         onChange={e => setUsername(e.target.value)}
       />
       {/* Password text field */}
@@ -67,6 +69,7 @@ export default function AuthForm(props) {
         type={showPassword ? "text" : "password"}
         autoComplete="current-password"
         variant="filled"
+        value={password}
         onChange={e => setPassword(e.target.value)}
         InputProps={{
           endAdornment: <InputAdornment position="end">
