@@ -1,4 +1,4 @@
-import { Box, SwipeableDrawer, Typography } from "@mui/material";
+import { Box, Drawer, SwipeableDrawer, Typography } from "@mui/material";
 
 export default function NavBar(props) {
   const isDrawerOpen = props.isDrawerOpen;
@@ -19,6 +19,7 @@ export default function NavBar(props) {
       <SwipeableDrawer
         variant="temporary"
         open={isDrawerOpen}
+        onOpen={handleDrawerToggle}
         onClose={handleDrawerToggle}
         sx={{
           display: { xs: 'block', sm: 'none' },
@@ -28,7 +29,7 @@ export default function NavBar(props) {
         {list}
       </SwipeableDrawer>
 
-      <SwipeableDrawer
+      <Drawer
         variant="permanent"
         sx={{
           display: { xs: 'none', sm: 'block' },
@@ -37,7 +38,7 @@ export default function NavBar(props) {
         open
       >
         {list}
-      </SwipeableDrawer>
+      </Drawer>
     </Box>
   );
 }
