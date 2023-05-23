@@ -1,9 +1,10 @@
+import { Route, Routes } from "react-router-dom";
 import { useState } from "react";
 import { Box, CssBaseline } from "@mui/material";
 import TopBar from "./components/TopBar";
 import NavBar from "./components/NavBar";
-import TransactionsList from "./components/TransactionsList";
-import BudgetBar from "./components/BudgetBar";
+import Home from "./pages/Home";
+import NoPage from "./pages/NoPage";
 
 const drawerWidth = 240;
 
@@ -16,6 +17,7 @@ export default function App() {
 
   return (
     <Box sx={{ display: "flex" }}>
+      {/* The TopBar and NavBar are always rendered */}
       <CssBaseline />
       <Box
         component="nav"
@@ -42,8 +44,12 @@ export default function App() {
             overflowY: "auto",
           }}
         >
-          <BudgetBar />
-          <TransactionsList />
+          {/* These are the various routes to different pages */}
+          <Routes>
+            <Route path="/" exact element={<Home />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/*" element={<NoPage />} />
+          </Routes>
         </Box>
       </Box>
     </Box>
