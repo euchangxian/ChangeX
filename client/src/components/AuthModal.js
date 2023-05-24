@@ -1,7 +1,6 @@
 import { useState } from "react";
-import { Modal, Box, Typography, TextField, Button, FormControlLabel, Checkbox, Tab, Tabs } from "@mui/material";
+import { Modal, Box, Tab } from "@mui/material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
-import LockIcon from "@mui/icons-material/Lock";
 import AuthForm from "./AuthForm";
 
 const modalStyle = {
