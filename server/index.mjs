@@ -1,11 +1,9 @@
 import express from "express";
-import session from "express-session";
 import bodyParser from "body-parser";
 import cors from "cors";
 import "./loadEnvironment.mjs";
 import "express-async-errors";
 import authRouter from "./routes/auth.mjs";
-import MongoStore from "connect-mongo";
 
 const PORT = process.env.PORT || 5050;
 const app = express();
@@ -21,16 +19,7 @@ app.use(
 );
 
 // TODO: Load routes
-// app.post("/signin", (req, res) => {
-//   console.log(req.body);
-//   res.sendStatus(201);
-// });
-// app.post("/signup", (req, res) => {
-//   console.log(req.body);
-//   res.sendStatus(201);
-// });
-
-app.use("/", authRouter);
+app.use("/", authRouter); // Authentication route
 
 
 // Global error handling
@@ -40,6 +29,7 @@ app.use((err, _req, res, next) => {
 
 app.get("/", (req, res) => {
   console.log("Hello \"/\"");
+  console.log(req.session);
   res.status(201).send("User logged in successfully");
 });
 
