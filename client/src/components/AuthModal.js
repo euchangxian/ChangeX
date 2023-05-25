@@ -24,7 +24,7 @@ export default function AuthModal(props) {
   const isAuthModalOpen = props.isAuthModalOpen;
   const handleAuthButtonClick = props.handleAuthButtonClick;
 
-  const [tabIndex, setTabIndex] = useState("Sign In");
+  const [tabIndex, setTabIndex] = useState("Log In");
 
   const handleChange = (event, newTabIndex) => {
     setTabIndex(newTabIndex);

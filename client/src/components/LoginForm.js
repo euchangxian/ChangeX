@@ -22,7 +22,7 @@ export default function LoginForm() {
     await axios.post("http://localhost:5050/login/password", {
       username: username,
       password: password
-    });
+    }, { withCredentials: true, }); // This is needed.
     setPassword("");
   }
 
