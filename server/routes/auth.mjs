@@ -1,42 +1,16 @@
 import "../loadEnvironment.mjs";
 import express from "express";
-import session from "express-session";
 import passport from "passport";
 import LocalStrategy from "passport-local";
 import bcrypt from "bcrypt";
 import db from "../db/conn.mjs";
-import MongoStore from "connect-mongo";
-import path from "path";
-import { fileURLToPath } from "url";
 
 const router = express.Router();
 const users = db.collection("users");
 
-router.use(express.static(path.join(path.dirname(fileURLToPath(import.meta.url)), "public")));
-
-router.use(
-  session({
-    secret: process.env.SECRET,
-    saveUninitialized: false, // don't create session until something stored
-    resave: false, //don't save session if unmodified
-    store: MongoStore.create({
-      mongoUrl: process.env.ATLAS_URI,
-      touchAfter: 24 * 3600 // time period in seconds
-    }),
-    cookie: {
-      path: "/",
-      expires: new Date(Date.now() + 24 * 60 * 60 * 1000), // Sets the expiration date to 1 day from now
-      maxAge: 24 * 60 * 60 * 1000 // Sets the maximum age of the cookie to 1 day
-    }
-  })
-);
-router.use(passport.initialize());
-router.use(passport.session());
-router.use(passport.authenticate("session"));
-
 // Passport configuration for sign in
 passport.use(
-  "signIn",
+  "login",
   new LocalStrategy(
     {
       usernameField: "username",
@@ -57,7 +31,7 @@ passport.use(
             return done(null, false, { message: "Incorrect password." });
           }
           // If password is a match, return the existing user.
-          console.log(`User ${existingUser.username} signed in successfully`);
+          console.log(`User ${existingUser.username} logged in successfully`);
           return done(null, existingUser);
         });
       }).catch(error => {
@@ -83,7 +57,7 @@ passport.deserializeUser((user, done) => {
 const saltRounds = 10;
 // Passport configuration for sign ups
 passport.use(
-  "signUp",
+  "signup",
   new LocalStrategy(
     {
       usernameField: "username",
@@ -122,23 +96,23 @@ passport.use(
   )
 );
 
-router.post("/signin/password", passport.authenticate("signIn", {
+router.post("/login/password", passport.authenticate("login", {
   successRedirect: "/",
-  failureRedirect: "/signin"
+  failureRedirect: "/login"
 }));
 
-router.post("/signup", passport.authenticate("signUp", {
+router.post("/signup", passport.authenticate("signup", {
   successRedirect: "/",
   failureRedirect: "/signup"
 }));
 
-router.post("/signout", (req, res, next) => {
+router.post("/logout", (req, res, next) => {
   req.logout(err => {
     if (err) {
       return next(err);
     }
-    console.log("User signed out successfully.");
-    res.redirect("/signin");
+    console.log("User logged out successfully.");
+    res.redirect("/login");
   });
 })
 

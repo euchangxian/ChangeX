@@ -1,17 +1,17 @@
 import express from "express";
+import session from "express-session";
 import bodyParser from "body-parser";
 import cors from "cors";
 import "./loadEnvironment.mjs";
-import "express-async-errors";
+import passport from "passport";
 import authRouter from "./routes/auth.mjs";
 import cookieParser from "cookie-parser";
+import MongoStore from "connect-mongo";
+import path from "path";
+import { fileURLToPath } from "url";
 
 const PORT = process.env.PORT || 5050;
 const app = express();
-
-app.use(cors());
-app.use(cookieParser(process.env.SECRET));
-app.use(bodyParser.json());
 app.use(
   cors({
     origin: "http://localhost:3000",
@@ -19,6 +19,24 @@ app.use(
     optionsSuccessStatus: 200
   })
 );
+app.use(express.static(path.join(path.dirname(fileURLToPath(import.meta.url)), "public")));
+app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser(process.env.SECRET));
+app.use(
+  session({
+    secret: process.env.SECRET,
+    saveUninitialized: false, // don't create session until something stored
+    resave: false, //don't save session if unmodified
+    store: MongoStore.create({
+      mongoUrl: process.env.ATLAS_URI,
+      touchAfter: 24 * 3600 // time period in seconds
+    })
+  })
+);
+app.use(passport.authenticate("session"));
+app.use(passport.initialize());
+app.use(passport.session());
 
 // TODO: Load routes
 app.use("/", authRouter); // Authentication route
@@ -31,12 +49,13 @@ app.use((err, _req, res, next) => {
 
 app.get("/", (req, res) => {
   console.log("Hello \"/\"");
+  // console.log(req);
   const { userId, username } = req.user;
   console.log(req.isAuthenticated());
   res.send(`User ${username} signed in successfully!`);
 });
 
-app.get("/signin", (req, res) => {
+app.get("/login", (req, res) => {
   console.log("Hello signin");
   res.send("Sign In page");
 });

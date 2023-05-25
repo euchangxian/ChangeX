@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Modal, Box, Tab } from "@mui/material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
-import AuthForm from "./AuthForm";
+import LoginForm from "./LoginForm";
+import SignUpForm from "./SignUpForm";
 
 const modalStyle = {
   display: 'flex',
@@ -23,7 +25,7 @@ export default function AuthModal(props) {
   const isAuthModalOpen = props.isAuthModalOpen;
   const handleAuthButtonClick = props.handleAuthButtonClick;
 
-  const [tabIndex, setTabIndex] = useState("Sign In");
+  const [tabIndex, setTabIndex] = useState("Log In");
 
   const handleChange = (event, newTabIndex) => {
     setTabIndex(newTabIndex);
@@ -40,15 +42,15 @@ export default function AuthModal(props) {
         <TabContext value={tabIndex}>
           <Box sx={{ borderBottom: 1, borderColor: 'divider', width: '100%' }}>
             <TabList onChange={handleChange} centered variant="fullWidth">
-              <Tab value="Sign In" label="Sign In" />
-              <Tab value="Sign Up" label="Sign Up" />
+              <Tab value="Log In" label="Log In" component={Link} to="/login" />
+              <Tab value="Sign Up" label="Sign Up" component={Link} to="signup" />
             </TabList>
           </Box>
-          <TabPanel value={"Sign In"}>
-            <AuthForm route={"/signin"} />
+          <TabPanel value={"Log In"}>
+            <LoginForm />
           </TabPanel>
           <TabPanel value={"Sign Up"}>
-            <AuthForm route={"/signup"} />
+            <SignUpForm />
           </TabPanel>
         </TabContext>
       </Box>
