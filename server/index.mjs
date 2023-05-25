@@ -53,7 +53,6 @@ app.get("/", (req, res) => {
   const { userId, username } = req.user;
   console.log(req.isAuthenticated());
   res.send(`User ${username} signed in successfully!`);
-  // res.send("User signed in successfully");
 });
 
 app.get("/login", (req, res) => {

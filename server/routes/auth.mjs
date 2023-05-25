@@ -1,13 +1,9 @@
 import "../loadEnvironment.mjs";
 import express from "express";
-import session from "express-session";
 import passport from "passport";
 import LocalStrategy from "passport-local";
 import bcrypt from "bcrypt";
 import db from "../db/conn.mjs";
-import MongoStore from "connect-mongo";
-import path from "path";
-import { fileURLToPath } from "url";
 
 const router = express.Router();
 const users = db.collection("users");
