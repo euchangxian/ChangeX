@@ -1,9 +1,9 @@
 import { Route, Routes } from "react-router-dom"
 import { Grid, CssBaseline, Box, Paper } from "@mui/material"
-import LoginForm from "./components/LoginForm"
-import SignUpForm from "./components/SignUpForm";
+import LoginForm from "../components/LoginForm"
+import SignUpForm from "../components/SignUpForm";
 
-export default function App() {
+export default function Auth() {
   return (
     <Grid container component="main" sx={{ height: '100vh' }}>
       <CssBaseline />
