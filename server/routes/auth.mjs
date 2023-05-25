@@ -31,6 +31,7 @@ router.use(
   })
 );
 router.use(passport.initialize());
+router.use(passport.session());
 router.use(passport.authenticate("session"));
 
 // Passport configuration for sign in
@@ -123,12 +124,22 @@ passport.use(
 
 router.post("/signin/password", passport.authenticate("signIn", {
   successRedirect: "/",
-  failureRedirect: "/"
+  failureRedirect: "/signin"
 }));
 
 router.post("/signup", passport.authenticate("signUp", {
   successRedirect: "/",
-  failureRedirect: "/"
+  failureRedirect: "/signup"
 }));
+
+router.post("/signout", (req, res, next) => {
+  req.logout(err => {
+    if (err) {
+      return next(err);
+    }
+    console.log("User signed out successfully.");
+    res.redirect("/signin");
+  });
+})
 
 export default router;
