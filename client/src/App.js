@@ -1,57 +1,43 @@
-import { Route, Routes } from "react-router-dom";
-import { useState } from "react";
-import { Box, CssBaseline } from "@mui/material";
-import TopBar from "./components/TopBar";
-import NavBar from "./components/NavBar";
-import Home from "./pages/Home";
-import NoPage from "./pages/NoPage";
-
-const drawerWidth = 240;
+import { Route, Routes } from "react-router-dom"
+import { Grid, CssBaseline, Box, Paper } from "@mui/material"
+import LoginForm from "./components/LoginForm"
+import SignUpForm from "./components/SignUpForm";
 
 export default function App() {
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-
-  const handleDrawerToggle = () => {
-    setIsDrawerOpen(!isDrawerOpen);
-  };
-
   return (
-    <Box sx={{ display: "flex" }}>
-      {/* The TopBar and NavBar are always rendered */}
+    <Grid container component="main" sx={{ height: '100vh' }}>
       <CssBaseline />
-      <Box
-        component="nav"
+      <Grid
+        item
+        xs={false}
+        sm={4}
+        md={7}
         sx={{
-          width: { sm: drawerWidth },
-          flexShrink: { sm: 0 },
+          backgroundImage: 'url(https://source.unsplash.com/random?wallpapers)',
+          backgroundRepeat: 'no-repeat',
+          backgroundColor: (t) =>
+            t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
         }}
-      >
-        <NavBar
-          isDrawerOpen={isDrawerOpen}
-          handleDrawerToggle={handleDrawerToggle}
-          drawerWidth={drawerWidth}
-        />
-      </Box>
-      <Box sx={{ flexGrow: 1, overflow: "hidden" }}>
-        <TopBar
-          handleDrawerToggle={handleDrawerToggle}
-          drawerWidth={drawerWidth}
-        />
+      />
+      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
         <Box
           sx={{
-            paddingTop: (theme) => theme.spacing(8),
-            paddingBottom: (theme) => theme.spacing(2),
-            overflowY: "auto",
+            my: 8,
+            mx: 4,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
           }}
         >
-          {/* These are the various routes to different pages */}
           <Routes>
-            <Route path="/" exact element={<Home />} />
-            <Route path="/home" element={<Home />} />
-            <Route path="/*" element={<NoPage />} />
+            <Route path="/" exact element={<LoginForm />} />
+            <Route path="/login" exact element={<LoginForm />} />
+            <Route path="/signup" element={<SignUpForm />} />
           </Routes>
         </Box>
-      </Box>
-    </Box>
+      </Grid>
+    </Grid>
   );
 }

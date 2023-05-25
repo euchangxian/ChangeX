@@ -3,6 +3,7 @@ import { Box, Typography, TextField, Button, InputAdornment, IconButton } from "
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import LockIcon from '@mui/icons-material/Lock';
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 export default function LoginForm() {
   // Logic to handle show/hide password.
@@ -39,6 +40,7 @@ export default function LoginForm() {
       }}
       onSubmit={handleSubmit}
     >
+      <Typography align="center" variant="h3" sx={{ padding: 3, color: "" }}>ChangeX</Typography>
       <LockIcon fontSize='large' />
       <Typography align="center" variant="h5">Sign Up</Typography>
       {/* Username text field.*/}
@@ -87,6 +89,9 @@ export default function LoginForm() {
       >
         Sign Up
       </Button>
+      <Link to="/login">
+        {"Already have an account? Log in"}
+      </Link>
     </Box>
   );
 }
