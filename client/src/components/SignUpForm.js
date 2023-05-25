@@ -1,14 +1,10 @@
 import { useState } from "react";
-import { Box, Typography, TextField, FormControlLabel, Button, Checkbox, InputAdornment, IconButton } from "@mui/material";
+import { Box, Typography, TextField, Button, InputAdornment, IconButton } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import LockIcon from '@mui/icons-material/Lock';
 import axios from "axios";
 
-export default function AuthForm(props) {
-  const isSignIn = props.route === "/signin";
-  const message = isSignIn ? "Sign In" : "Sign Up";
-  const route = isSignIn ? props.route + "/password" : props.route;
-
+export default function LoginForm() {
   // Logic to handle show/hide password.
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => {
@@ -18,13 +14,12 @@ export default function AuthForm(props) {
     event.preventDefault();
   };
 
-
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const handleSubmit = async event => {
     event.preventDefault();
 
-    await axios.post("http://localhost:5050" + route, {
+    await axios.post("http://localhost:5050/signup", {
       username: username,
       password: password
     });
@@ -45,8 +40,8 @@ export default function AuthForm(props) {
       onSubmit={handleSubmit}
     >
       <LockIcon fontSize='large' />
-      <Typography align="center" variant="h5">{message}</Typography>
-      {/* Username text field. Only shown in signup form */}
+      <Typography align="center" variant="h5">Sign Up</Typography>
+      {/* Username text field.*/}
       <TextField
         margin="normal"
         required
@@ -84,21 +79,13 @@ export default function AuthForm(props) {
           </InputAdornment>
         }}
       />
-      {/* Remember me checkbox. Only shown on Sign in forms */}
-      {
-        isSignIn &&
-        <FormControlLabel
-          control={<Checkbox value="remember" color="primary" />}
-          label="Remember me"
-        />
-      }
       <Button
         type="submit"
         fullWidth
         variant="contained"
         sx={{ mt: 3, mb: 2 }}
       >
-        {message}
+        Sign Up
       </Button>
     </Box>
   );

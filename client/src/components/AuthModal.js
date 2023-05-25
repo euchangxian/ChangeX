@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { Modal, Box, Typography, TextField, Button, FormControlLabel, Checkbox, Tab, Tabs } from "@mui/material";
+import { Modal, Box, Tab } from "@mui/material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
-import LockIcon from "@mui/icons-material/Lock";
-import AuthForm from "./AuthForm";
+import LoginForm from "./LoginForm";
+import SignUpForm from "./SignUpForm";
 
 const modalStyle = {
   display: 'flex',
@@ -46,10 +46,10 @@ export default function AuthModal(props) {
             </TabList>
           </Box>
           <TabPanel value={"Sign In"}>
-            <AuthForm route={"/signin"} />
+            <LoginForm />
           </TabPanel>
           <TabPanel value={"Sign Up"}>
-            <AuthForm route={"/signup"} />
+            <SignUpForm />
           </TabPanel>
         </TabContext>
       </Box>
