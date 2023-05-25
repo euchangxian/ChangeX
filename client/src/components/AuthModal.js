@@ -41,11 +41,11 @@ export default function AuthModal(props) {
         <TabContext value={tabIndex}>
           <Box sx={{ borderBottom: 1, borderColor: 'divider', width: '100%' }}>
             <TabList onChange={handleChange} centered variant="fullWidth">
-              <Tab value="Sign In" label="Sign In" />
+              <Tab value="Log In" label="Log In" />
               <Tab value="Sign Up" label="Sign Up" />
             </TabList>
           </Box>
-          <TabPanel value={"Sign In"}>
+          <TabPanel value={"Log In"}>
             <LoginForm />
           </TabPanel>
           <TabPanel value={"Sign Up"}>
