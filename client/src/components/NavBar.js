@@ -1,4 +1,4 @@
-import { Box, Drawer, SwipeableDrawer, Typography, List, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
+import { Box, Drawer, SwipeableDrawer, Typography, List, ListItemButton, ListItemIcon, ListItemText, Divider } from "@mui/material";
 import { Home, BarChart, Flag } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 
@@ -13,6 +13,7 @@ export default function NavBar(props) {
       <Typography variant="h6" component="div">
         Navigation Bar
       </Typography>
+      <Divider variant="middle" />
       <List component="nav">
         {/* Each list item button is a link to another page */}
         <ListItemButton component={Link} to="/home">
