@@ -6,9 +6,14 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 
 export default function BudgetBar() {
+  const [userMonthlyBudget, setUserMonthlyBudget] = React.useState({
+    user_id: 1,
+    budget: 1500,
+    startDate:"Jan",
+  });
   const expenditure = 140;
   const budget = 150;
-  const budgetPct = expenditure * 100 / budget;
+  const budgetPct = (expenditure * 100) / budget;
   const datePct = new Date().getDate() / 30;
   const onTrackPct = budgetPct / datePct;
 
@@ -21,7 +26,7 @@ export default function BudgetBar() {
     <Box sx={{ margin: "16px" }}>
       <Box display="flex" flexDirection="row" alignItems="center" mb={2}>
         <Box flexGrow={1}>
-          <Typography variant="h4">Your budget for January</Typography>
+          <Typography variant="h4">Your budget for { userMonthlyBudget.startDate }</Typography>
         </Box>
         <Box>
           <Typography variant="h4" component="span">
@@ -37,7 +42,7 @@ export default function BudgetBar() {
           variant="determinate"
           value={budgetPct}
           sx={{ height: 10 }}
-          color={ progressBarColor }
+          color={progressBarColor}
         />
       </Box>
     </Box>
