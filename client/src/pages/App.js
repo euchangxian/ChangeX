@@ -1,10 +1,8 @@
-import { Route, Routes } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { useState } from "react";
 import { Box, CssBaseline } from "@mui/material";
 import TopBar from "../components/TopBar";
 import NavBar from "../components/NavBar";
-import Home from "./Home";
-import NoPage from "./NoPage";
 
 const drawerWidth = 240;
 
@@ -44,11 +42,7 @@ export default function App() {
             overflowY: "auto",
           }}
         >
-          {/* These are the various routes to different pages */}
-          <Routes>
-            <Route path="/home" element={<Home />} />
-            <Route path="/*" element={<NoPage />} />
-          </Routes>
+          <Outlet />
         </Box>
       </Box>
     </Box>

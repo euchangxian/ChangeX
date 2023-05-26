@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Box, Typography, TextField, FormControlLabel, Button, Checkbox, InputAdornment, IconButton, Divider } from "@mui/material";
+import { Box, Typography, TextField, FormControlLabel, Button, Checkbox, InputAdornment, IconButton } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import LockIcon from '@mui/icons-material/Lock';
 import axios from "axios";
@@ -40,7 +40,7 @@ export default function LoginForm() {
       }}
       onSubmit={handleSubmit}
     >
-      <Typography align="center" variant="h3" sx={{padding: 3, color:""}}>ChangeX</Typography>
+      <Typography align="center" variant="h3" sx={{ padding: 3, color: "" }}>ChangeX</Typography>
       <LockIcon fontSize='large' />
       <Typography align="center" variant="h5">Log In</Typography>
       {/* Username text field.*/}

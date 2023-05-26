@@ -5,7 +5,7 @@ import LockIcon from '@mui/icons-material/Lock';
 import axios from "axios";
 import { Link } from "react-router-dom";
 
-export default function LoginForm() {
+export default function SignUpForm() {
   // Logic to handle show/hide password.
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => {
