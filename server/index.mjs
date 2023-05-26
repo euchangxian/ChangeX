@@ -1,16 +1,16 @@
 import express from "express";
-import session from "express-session";
 import bodyParser from "body-parser";
 import cors from "cors";
 import "./loadEnvironment.mjs";
 import "express-async-errors";
 import authRouter from "./routes/auth.mjs";
-import MongoStore from "connect-mongo";
+import cookieParser from "cookie-parser";
 
 const PORT = process.env.PORT || 5050;
 const app = express();
 
 app.use(cors());
+app.use(cookieParser(process.env.SECRET));
 app.use(bodyParser.json());
 app.use(
   cors({
@@ -21,16 +21,7 @@ app.use(
 );
 
 // TODO: Load routes
-// app.post("/signin", (req, res) => {
-//   console.log(req.body);
-//   res.sendStatus(201);
-// });
-// app.post("/signup", (req, res) => {
-//   console.log(req.body);
-//   res.sendStatus(201);
-// });
-
-app.use("/", authRouter);
+app.use("/", authRouter); // Authentication route
 
 
 // Global error handling
@@ -40,7 +31,19 @@ app.use((err, _req, res, next) => {
 
 app.get("/", (req, res) => {
   console.log("Hello \"/\"");
-  res.status(201).send("User logged in successfully");
+  const { userId, username } = req.user;
+  console.log(req.isAuthenticated());
+  res.send(`User ${username} signed in successfully!`);
+});
+
+app.get("/signin", (req, res) => {
+  console.log("Hello signin");
+  res.send("Sign In page");
+});
+
+app.get("/signup", (req, res) => {
+  console.log("Hello signup");
+  res.send("Sign Up page")
 });
 
 // Start the Express server

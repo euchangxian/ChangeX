@@ -6,9 +6,13 @@ import LocalStrategy from "passport-local";
 import bcrypt from "bcrypt";
 import db from "../db/conn.mjs";
 import MongoStore from "connect-mongo";
+import path from "path";
+import { fileURLToPath } from "url";
 
 const router = express.Router();
 const users = db.collection("users");
+
+router.use(express.static(path.join(path.dirname(fileURLToPath(import.meta.url)), "public")));
 
 router.use(
   session({
@@ -18,9 +22,17 @@ router.use(
     store: MongoStore.create({
       mongoUrl: process.env.ATLAS_URI,
       touchAfter: 24 * 3600 // time period in seconds
-    })
+    }),
+    cookie: {
+      path: "/",
+      expires: new Date(Date.now() + 24 * 60 * 60 * 1000), // Sets the expiration date to 1 day from now
+      maxAge: 24 * 60 * 60 * 1000 // Sets the maximum age of the cookie to 1 day
+    }
   })
 );
+router.use(passport.initialize());
+router.use(passport.session());
+router.use(passport.authenticate("session"));
 
 // Passport configuration for sign in
 passport.use(
@@ -112,12 +124,22 @@ passport.use(
 
 router.post("/signin/password", passport.authenticate("signIn", {
   successRedirect: "/",
-  failureRedirect: "/"
+  failureRedirect: "/signin"
 }));
 
 router.post("/signup", passport.authenticate("signUp", {
   successRedirect: "/",
-  failureRedirect: "/"
+  failureRedirect: "/signup"
 }));
+
+router.post("/signout", (req, res, next) => {
+  req.logout(err => {
+    if (err) {
+      return next(err);
+    }
+    console.log("User signed out successfully.");
+    res.redirect("/signin");
+  });
+})
 
 export default router;
