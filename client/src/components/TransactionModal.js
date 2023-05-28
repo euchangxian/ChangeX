@@ -12,19 +12,92 @@ import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import ListItemText from "@mui/material/ListItemText";
 import ImageIcon from "@mui/icons-material/Image";
+import WorkIcon from "@mui/icons-material/Work";
+import BeachAccessIcon from "@mui/icons-material/BeachAccess";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-
-import { styles } from "./styles";
 
 export default function TransactionModal() {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  {/* Probably have a page counter state to handle this */}
-  const handleNext = () => console.log("next");
-  const handlePrev = () => console.log("prev");
+  const [allTransactions, setAllTransactions] = React.useState([
+    {
+      userID: "1",
+      amount: 30,
+      category: "Entertainment",
+      date: "19 Jan 2023",
+      description: "Fifty Fifty concert tickets",
+    },
+    {
+      userID: "1",
+      amount: 20,
+      category: "Work",
+      date: "19 Jan 2023",
+      description: "Fifty Fifty concert tickets",
+    },
+    {
+      userID: "1",
+      amount: 30,
+      category: "Vacation",
+      date: "19 Jan 2023",
+      description: "Fifty Fifty concert tickets",
+    },
+    {
+      userID: "1",
+      amount: 30,
+      category: "Entertainment",
+      date: "19 Jan 2023",
+      description: "Fifty Fifty concert tickets",
+    },
+    {
+      userID: "1",
+      amount: 20,
+      category: "Work",
+      date: "19 Jan 2023",
+      description: "Fifty Fifty concert tickets",
+    },
+    {
+      userID: "1",
+      amount: 30,
+      category: "Vacation",
+      date: "19 Jan 2023",
+      description: "Fifty Fifty concert tickets",
+    },
+  ]);
+
+  const allTransactionsDisplay = allTransactions.map((transaction) => (
+    <>
+      <ListItem>
+        <ListItemAvatar>
+          <Avatar>
+            {transaction.category === "Entertainment" && <ImageIcon />}
+            {transaction.category === "Work" && <WorkIcon />}
+            {transaction.category === "Vacation" && <BeachAccessIcon />}
+          </Avatar>
+        </ListItemAvatar>
+        <ListItemText
+          primary={transaction.description}
+          secondary={
+            <>
+              <span>{transaction.date}</span>
+              <br />
+              <span style={{ color: "red" }}>
+                -${transaction.amount.toFixed(2)}
+              </span>
+            </>
+          }
+        />
+        <IconButton aria-label="edit">
+          <EditIcon />
+        </IconButton>
+        <IconButton aria-label="delete">
+          <DeleteIcon />
+        </IconButton>
+      </ListItem>
+    </>
+  ));
 
   return (
     <>
@@ -32,72 +105,50 @@ export default function TransactionModal() {
       <Modal
         open={open}
         onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
+        aria-labelledby="Transaction-Modal"
+        aria-describedby="Shows-a-list-of-all-transactions-made-by-the-user"
       >
-        <Box sx={styles.boxInModal}>
-          <IconButton
-            aria-label="delete"
-            onClick={handleClose}
-            sx={{ marginLeft: "auto", marginTop: "-16px" }}
-          >
-            <CloseIcon />
-          </IconButton>
-          {/*List will show up to 10 transactions at a time. Can view prev/next 10 by clicking button*/}
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            height: 600,
+            width: 450,
+            bgcolor: "background.paper",
+            border: "2px solid #000",
+            boxShadow: 24,
+            p: 4,
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", marginTop:-20 }}>
+            <h2 style={{ flexGrow: 1 }}>All Transactions</h2>
+            <IconButton
+              aria-label="delete"
+              onClick={handleClose}
+              sx={{
+                marginLeft: "auto",
+                marginTop: "-16px",
+              }}
+            >
+              <CloseIcon />
+            </IconButton>
+          </div>
           <List
             sx={{
               width: "100%",
               minHeight: 480,
               maxWidth: 400,
               bgcolor: "background.paper",
+              overflowY: "auto",
             }}
-            subheader={
-              <ListSubheader
-                component="div"
-                id="list-header"
-                sx={{ fontSize: "28px", color: "black" }}
-              >
-                All Transactions
-              </ListSubheader>
-            }
           >
-            {/*Will require a function to read transactions from database and show first 10*/}
-            <ListItem>
-              <ListItemAvatar>
-                <Avatar>
-                  <ImageIcon />
-                </Avatar>
-              </ListItemAvatar>
-              <ListItemText
-                primary="Photos"
-                secondary={
-                  <>
-                    <span>19 Jan 2023</span>
-                    <br />
-                    <span style={{ color: 'red' }}>-$30.00</span>
-                  </>
-                }
-              />
-              {/*Button needs an onClick to handle delete transaction from database*/}
-              <IconButton aria-label="edit">
-                <EditIcon />
-              </IconButton>
-              <IconButton aria-label="delete">
-                <DeleteIcon />
-              </IconButton>
-            </ListItem>
+            {/*This shows all Transactions in a scrollable list.*/}
+            {allTransactionsDisplay}
           </List>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              paddingBottom: 16,
-            }}
-          >
-            <Button onClick={handlePrev}>Prev</Button>
-            <Button onClick={handleNext}>Next</Button>
-          </Box>
         </Box>
       </Modal>
     </>
