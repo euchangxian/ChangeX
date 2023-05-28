@@ -1,14 +1,13 @@
+import "./loadEnvironment.mjs";
 import express from "express";
 import session from "express-session";
 import bodyParser from "body-parser";
 import cors from "cors";
-import "./loadEnvironment.mjs";
-import passport from "passport";
-import authRouter from "./routes/auth.mjs";
 import cookieParser from "cookie-parser";
 import MongoStore from "connect-mongo";
 import path from "path";
 import { fileURLToPath } from "url";
+import authRoutes from "./routes/authRoutes.mjs";
 
 const PORT = process.env.PORT || 5050;
 const app = express();
@@ -34,30 +33,18 @@ app.use(
     })
   })
 );
-app.use(passport.authenticate("session"));
-app.use(passport.initialize());
-app.use(passport.session());
 
 // TODO: Load routes
-app.use("/", authRouter); // Authentication route
-
-
-// Global error handling
-app.use((err, _req, res, next) => {
-  res.status(500).send("Uh oh! An unexpected error occurred.");
-})
+app.use(authRoutes);
 
 app.get("/", (req, res) => {
   console.log("Hello \"/\"");
-  // console.log(req);
-  const { userId, username } = req.user;
-  console.log(req.isAuthenticated());
-  res.send(`User ${username} signed in successfully!`);
+  res.send("/ page");
 });
 
 app.get("/login", (req, res) => {
-  console.log("Hello signin");
-  res.send("Sign In page");
+  console.log("Hello login");
+  res.send("Log In page");
 });
 
 app.get("/signup", (req, res) => {
