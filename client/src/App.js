@@ -18,7 +18,6 @@ export default function App() {
         </Route>
         <Route path="/changex" element={<ChangeX />} >
           <Route path="/changex" element={<Home />} />
-          <Route path="home" element={<Home />} />
         </Route>
         <Route path="/*" element={<NoPage />} />
       </Routes>

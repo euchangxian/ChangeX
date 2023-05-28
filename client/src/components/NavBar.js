@@ -16,7 +16,7 @@ export default function NavBar(props) {
       <Divider variant="middle" />
       <List component="nav">
         {/* Each list item button is a link to another page */}
-        <ListItemButton component={Link} to="home">
+        <ListItemButton component={Link} to="">
           <ListItemIcon>
             <Home />
           </ListItemIcon>
