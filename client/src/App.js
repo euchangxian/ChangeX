@@ -1,57 +1,26 @@
-import { Route, Routes } from "react-router-dom";
-import { useState } from "react";
-import { Box, CssBaseline } from "@mui/material";
-import TopBar from "./components/TopBar";
-import NavBar from "./components/NavBar";
+import Auth from "./pages/Auth";
+import ChangeX from "./pages/ChangeX";
 import Home from "./pages/Home";
 import NoPage from "./pages/NoPage";
+import LoginForm from "./components/LoginForm";
+import SignUpForm from "./components/SignUpForm";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-const drawerWidth = 240;
 
 export default function App() {
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-
-  const handleDrawerToggle = () => {
-    setIsDrawerOpen(!isDrawerOpen);
-  };
-
   return (
-    <Box sx={{ display: "flex" }}>
-      {/* The TopBar and NavBar are always rendered */}
-      <CssBaseline />
-      <Box
-        component="nav"
-        sx={{
-          width: { sm: drawerWidth },
-          flexShrink: { sm: 0 },
-        }}
-      >
-        <NavBar
-          isDrawerOpen={isDrawerOpen}
-          handleDrawerToggle={handleDrawerToggle}
-          drawerWidth={drawerWidth}
-        />
-      </Box>
-      <Box sx={{ flexGrow: 1, overflow: "hidden" }}>
-        <TopBar
-          handleDrawerToggle={handleDrawerToggle}
-          drawerWidth={drawerWidth}
-        />
-        <Box
-          sx={{
-            paddingTop: (theme) => theme.spacing(8),
-            paddingBottom: (theme) => theme.spacing(2),
-            overflowY: "auto",
-          }}
-        >
-          {/* These are the various routes to different pages */}
-          <Routes>
-            <Route path="/" exact element={<Home />} />
-            <Route path="/home" element={<Home />} />
-            <Route path="/*" element={<NoPage />} />
-          </Routes>
-        </Box>
-      </Box>
-    </Box>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Auth />}>
+          <Route path="/" element={<LoginForm />} />
+          <Route path="/login" element={<LoginForm />} />
+          <Route path="signup" element={<SignUpForm />} />
+        </Route>
+        <Route path="/changex" element={<ChangeX />} >
+          <Route path="/changex" element={<Home />} />
+        </Route>
+        <Route path="/*" element={<NoPage />} />
+      </Routes>
+    </BrowserRouter>
   );
 }

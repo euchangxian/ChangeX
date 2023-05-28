@@ -1,17 +1,17 @@
+import "./loadEnvironment.mjs";
 import express from "express";
+import session from "express-session";
 import bodyParser from "body-parser";
 import cors from "cors";
-import "./loadEnvironment.mjs";
-import "express-async-errors";
-import authRouter from "./routes/auth.mjs";
 import cookieParser from "cookie-parser";
+import MongoStore from "connect-mongo";
+import path from "path";
+import { fileURLToPath } from "url";
+import authRoutes from "./routes/authRoutes.mjs";
+import authJwt from "./middlewares/authJwt.mjs";
 
 const PORT = process.env.PORT || 5050;
 const app = express();
-
-app.use(cors());
-app.use(cookieParser(process.env.SECRET));
-app.use(bodyParser.json());
 app.use(
   cors({
     origin: "http://localhost:3000",
@@ -19,26 +19,36 @@ app.use(
     optionsSuccessStatus: 200
   })
 );
+app.use(express.static(path.join(path.dirname(fileURLToPath(import.meta.url)), "public")));
+app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser(process.env.SECRET));
+app.use(
+  session({
+    secret: process.env.SECRET,
+    saveUninitialized: false, // don't create session until something stored
+    resave: false, //don't save session if unmodified
+    store: MongoStore.create({
+      mongoUrl: process.env.ATLAS_URI,
+      touchAfter: 24 * 3600 // time period in seconds
+    })
+  })
+);
 
 // TODO: Load routes
-app.use("/", authRouter); // Authentication route
-
-
-// Global error handling
-app.use((err, _req, res, next) => {
-  res.status(500).send("Uh oh! An unexpected error occurred.");
-})
+// status 200 is sent for successful login/signup. 
+// status 400 is sent for incorrect username/password.
+// status 500 is sent for errors.
+app.use(authRoutes);
 
 app.get("/", (req, res) => {
   console.log("Hello \"/\"");
-  const { userId, username } = req.user;
-  console.log(req.isAuthenticated());
-  res.send(`User ${username} signed in successfully!`);
+  res.send("/ page");
 });
 
-app.get("/signin", (req, res) => {
-  console.log("Hello signin");
-  res.send("Sign In page");
+app.get("/login", (req, res) => {
+  console.log("Hello login");
+  res.send("Log In page");
 });
 
 app.get("/signup", (req, res) => {
