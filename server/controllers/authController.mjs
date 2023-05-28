@@ -42,9 +42,13 @@ const login = (req, res) => {
           message: "Incorrect password!"
         });
       }
-      const token = jwt.sign({ id: user._id.toString() }, process.env.SECRET, {
-        expiresIn: 24 * 60 * 60 // 24 hours
-      });
+      const token = jwt.sign(
+        { id: user._id.toString(), username: username },
+        process.env.SECRET,
+        {
+          expiresIn: 24 * 60 * 60 // 24 hours
+        }
+      );
 
       // sends the token back to the client.
       res.status(200).send({
