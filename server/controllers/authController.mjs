@@ -18,7 +18,7 @@ const signup = (req, res) => {
     };
     users.insertOne(newUser).then(res => {
       console.log(`User ${newUser.username} registered successfully!`);
-      res.send({ message: "User was registered successfully!" });
+      res.status(200).send({ message: "User was registered successfully!" });
     }).catch(error => {
       console.log(error);
       res.status(500).send({ message: error });
@@ -31,12 +31,12 @@ const login = (req, res) => {
   users.findOne({ username: username }).then(user => {
     if (!user) {
       console.log("User not found.");
-      return res.status(404).send({ message: "User not found." });
+      return res.status(400).send({ message: "User not found." });
     }
     bcrypt.compare(password, user.password).then(isMatch => {
       if (!isMatch) {
         console.log("Incorrect password!")
-        return res.status(401).send({
+        return res.status(400).send({
           accessToken: null,
           message: "Incorrect password!"
         });
