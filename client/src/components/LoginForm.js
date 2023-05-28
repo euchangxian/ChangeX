@@ -6,6 +6,17 @@ import LockIcon from '@mui/icons-material/Lock';
 import axios from "axios";
 import { toast } from "react-toastify";
 
+const toastConfig = {
+  position: "top-center",
+  autoClose: 2000,
+  hideProgressBar: false,
+  closeOnClick: true,
+  pauseOnHover: true,
+  draggable: true,
+  progress: undefined,
+  theme: "colored",
+};
+
 export default function LoginForm() {
   // Logic to handle show/hide password.
   const [showPassword, setShowPassword] = useState(false);
@@ -21,37 +32,20 @@ export default function LoginForm() {
   const navigate = useNavigate();
   const handleSubmit = async event => {
     event.preventDefault();
+
     await axios.post("http://localhost:5050/login/password", {
       username: username,
       password: password
-    }, { withCredentials: true, }).then(isLoggedIn => {
-      if (!isLoggedIn) {
-        toast.error('🦄 Wrong username or password!', {
-          position: "top-center",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
-        setPassword("");
-        return navigate("/login")
+    }, { withCredentials: true, }).then(res => {
+      if (res.status === 200) {
+        toast.success('🦄 Success!', toastConfig);
+        return navigate("/changex");
       }
-      toast.success('🦄 Success!', {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
-      return navigate("/changex");
+    }).catch(error => {
+      toast.error('🦄 Wrong username or password!', toastConfig);
+      setPassword("");
     });
-  }
+  };
 
   return (
     <Box

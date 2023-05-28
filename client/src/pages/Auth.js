@@ -1,5 +1,7 @@
 import { Outlet } from "react-router-dom";
 import { Grid, CssBaseline, Box, Paper } from "@mui/material"
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Auth() {
   return (
@@ -34,6 +36,18 @@ export default function Auth() {
           </Box>
         </Grid>
       </Grid>
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
     </>
   );
 }

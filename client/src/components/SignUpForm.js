@@ -3,7 +3,19 @@ import { Box, Typography, TextField, Button, InputAdornment, IconButton } from "
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import LockIcon from '@mui/icons-material/Lock';
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+
+const toastConfig = {
+  position: "top-center",
+  autoClose: 2000,
+  hideProgressBar: false,
+  closeOnClick: true,
+  pauseOnHover: true,
+  draggable: true,
+  progress: undefined,
+  theme: "colored",
+};
 
 export default function SignUpForm() {
   // Logic to handle show/hide password.
@@ -17,14 +29,23 @@ export default function SignUpForm() {
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
   const handleSubmit = async event => {
     event.preventDefault();
 
     await axios.post("http://localhost:5050/signup", {
       username: username,
       password: password
-    }, { withCredentials: true, });
-    setPassword("");
+    }, { withCredentials: true, }).then(res => {
+      if (res.status === 200) {
+        toast.success('🦄 Successfully registered!', toastConfig);
+        return navigate("/login");
+      }
+    }).catch(error => {
+      toast.error('🦄 Username taken already!', toastConfig);
+      setUsername("");
+      setPassword("");
+    });
   }
 
   return (
