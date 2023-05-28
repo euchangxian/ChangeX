@@ -8,12 +8,12 @@ const checkDuplicateUsername = (req, res, next) => {
   // Check duplicate username
   users.findOne({ username: req.body.username }).then(existingUser => {
     if (existingUser) {
-      res.status(400).send({ message: "Username is already taken!" });
-      return;
+      console.log("Username already taken!");
+      return res.status(400).send({ message: "Username is already taken!" });
     }
   }).catch(error => {
-    res.status(500).send({ message: error });
-    return;
+    console.log(error);
+    return res.status(500).send({ message: error });
   });
   next();
 };

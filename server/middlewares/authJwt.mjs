@@ -2,13 +2,13 @@ import "../loadEnvironment.mjs";
 import db from "../db/conn.mjs";
 import jwt from "jsonwebtoken";
 
-const users = db.colletion("users");
+const users = db.collection("users");
 
 const verifyToken = (req, res, next) => {
   const token = req.headers["x-access-token"];
 
   if (!token) {
-    return res.status.send({ message: "No token provided!" });
+    return res.status(401).send({ message: "No token provided!" });
   }
   jwt.verify(token, process.env.SECRET, (error, decoded) => {
     if (error) {

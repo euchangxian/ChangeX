@@ -11,17 +11,24 @@ const signup = (req, res) => {
   const { username, password } = req.body;
   // checking for duplicate username is done by the verifySignUp middleware. Hence we can assume no duplicate
   // usernames will be passed into the authController.
-  bcrypt.hash(password, saltRounds).then(hashed => {
+  // synchronous hashing because signup is called after verifySignUp, prevents setting http headers repeatedly.
+  bcrypt.hashSync(password, saltRounds, (error, hash) => {
+    if (error) {
+      console.log(error);
+      res.status(500).send({ message: error });
+    }
     const newUser = {
       username: username,
-      password: hashed
+      password: hash
     };
-    users.insertOne(newUser).then(res => {
+    users.insertOne(newUser).then(result => {
       console.log(`User ${newUser.username} registered successfully!`);
       res.status(200).send({ message: "User was registered successfully!" });
+      return;
     }).catch(error => {
       console.log(error);
       res.status(500).send({ message: error });
+      return;
     });
   });
 };
