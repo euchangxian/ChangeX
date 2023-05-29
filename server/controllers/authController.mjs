@@ -67,4 +67,9 @@ const login = (req, res) => {
   });
 };
 
-export { signup, login };
+const logout = (req, res) => {
+  res.clearCookie("jwtToken");
+  res.status(200).send("Logout successful");
+};
+
+export { signup, login, logout };

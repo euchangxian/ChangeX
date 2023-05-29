@@ -1,6 +1,6 @@
 import express from "express";
 import verifySignUp from "../middlewares/verifySignUp.mjs";
-import { signup, login } from "../controllers/authController.mjs";
+import { signup, login, logout } from "../controllers/authController.mjs";
 
 const router = express.Router();
 router.use((req, res, next) => {
@@ -20,6 +20,11 @@ router.post(
 router.post(
   "/login/password",
   login
+);
+
+router.post(
+  "/logout",
+  logout
 );
 
 export default router;
