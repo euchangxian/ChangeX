@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Box, Typography, TextField, FormControlLabel, Button, Checkbox, InputAdornment, IconButton } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import LockIcon from '@mui/icons-material/Lock';
-import axios from "axios";
+import axios from "../apis/axios";
 import { toast } from "react-toastify";
 
 const toastConfig = {
@@ -33,10 +33,10 @@ export default function LoginForm() {
   const handleSubmit = async event => {
     event.preventDefault();
 
-    await axios.post("http://localhost:5050/login/password", {
+    await axios.post("/login/password", {
       username: username,
       password: password
-    }, { withCredentials: true, }).then(res => {
+    }).then(res => {
       if (res.status === 200) {
         toast.success('🦄 Success!', toastConfig);
         return navigate("/changex");

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Box, Typography, TextField, Button, InputAdornment, IconButton } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import LockIcon from '@mui/icons-material/Lock';
-import axios from "axios";
+import axios from "../apis/axios";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -33,10 +33,10 @@ export default function SignUpForm() {
   const handleSubmit = async event => {
     event.preventDefault();
 
-    await axios.post("http://localhost:5050/signup", {
+    await axios.post("/signup", {
       username: username,
       password: password
-    }, { withCredentials: true, }).then(res => {
+    }).then(res => {
       if (res.status === 200) {
         toast.success('🦄 Successfully registered!', toastConfig);
         return navigate("/login");

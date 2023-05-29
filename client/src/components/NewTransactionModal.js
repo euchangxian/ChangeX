@@ -13,7 +13,7 @@ import MenuItem from "@mui/material/MenuItem";
 import SavingsIcon from '@mui/icons-material/Savings';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { ToggleButtonGroup, ToggleButton, Typography } from "@mui/material";
-import axios from "axios";
+import axios from "../apis/axios";
 
 export default function NewTransactionModal() {
   const [open, setOpen] = React.useState(false);
@@ -49,12 +49,12 @@ export default function NewTransactionModal() {
     console.log(amount);
     e.preventDefault();
 
-    await axios.post("http://localhost:5050/newtransaction", {
+    await axios.post("/newtransaction", {
       type: transactionType,
       category: category,
       description: description,
       amount: amount
-    }, { withCredentials: true },)
+    });
   };
 
   const categories = [
