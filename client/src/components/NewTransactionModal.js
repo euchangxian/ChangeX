@@ -8,10 +8,12 @@ import ListItemText from "@mui/material/ListItemText";
 import AddIcon from "@mui/icons-material/Add";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
-
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
-import { Typography } from "@mui/material";
+import SavingsIcon from '@mui/icons-material/Savings';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import { ToggleButtonGroup, ToggleButton, Typography } from "@mui/material";
+import axios from "axios";
 
 export default function NewTransactionModal() {
   const [open, setOpen] = React.useState(false);
@@ -23,21 +25,36 @@ export default function NewTransactionModal() {
     setAmount();
   };
 
+  const [transactionType, setTransactionType] = React.useState("spendings");
   const [category, setCategory] = React.useState("");
   const [description, setDescription] = React.useState("");
   const [amount, setAmount] = React.useState();
+
+  const handleTransactionType = (event, newTransactionType) => {
+    if (newTransactionType != null) {
+      setTransactionType(newTransactionType);
+    }
+  };
 
   const handleDecimalsOnValue = (value) => {
     const regex = /([0-9]*[\.|\,]{0,1}[0-9]{0,2})/s;
     return value.match(regex)[0];
   };
 
-  const handleNewTransaction = (e) => {
+  const handleNewTransaction = async (e) => {
     console.log("helloworld");
+    console.log(transactionType);
     console.log(category);
     console.log(description);
     console.log(amount);
     e.preventDefault();
+
+    await axios.post("http://localhost:5050/newtransaction", {
+      type: transactionType,
+      category: category,
+      description: description,
+      amount: amount
+    }, { withCredentials: true },)
   };
 
   const categories = [
@@ -98,6 +115,22 @@ export default function NewTransactionModal() {
             </IconButton>
           </div>
           <form onSubmit={handleNewTransaction}>
+            {/* div to select whether transaction is a payment or not */}
+            <div style={{ display: "flex", alignItems: "start" }}>
+              <ToggleButtonGroup
+                value={transactionType}
+                exclusive
+                onChange={handleTransactionType}
+                aria-label="savings or spendings selection"
+              >
+                <ToggleButton value="savings" aria-label="savings">
+                  <SavingsIcon />
+                </ToggleButton>
+                <ToggleButton value="spendings" aria-label="spendings">
+                  <ShoppingCartIcon />
+                </ToggleButton>
+              </ToggleButtonGroup>
+            </div>
             {/* div to select transaction category */}
             <div style={{ display: "flex", alignItems: "center" }}>
               <Typography sx={{ marginRight: "20px" }}>
@@ -150,7 +183,7 @@ export default function NewTransactionModal() {
                 }}
               />
             </div>
-            <div style={{marginTop:20, display:"flex", justifyContent:"center"}}>
+            <div style={{ marginTop: 20, display: "flex", justifyContent: "center" }}>
               <Button type="submit" variant="contained" color="primary">
                 Submit
               </Button>
