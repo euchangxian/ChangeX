@@ -54,6 +54,8 @@ export default function NewTransactionModal() {
       category: category,
       description: description,
       amount: amount
+    }).then(res => {
+      console.log(res);
     });
   };
 

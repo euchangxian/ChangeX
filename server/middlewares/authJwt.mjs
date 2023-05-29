@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 const users = db.collection("users");
 
 const verifyToken = (req, res, next) => {
-  const token = req.headers["x-access-token"];
+  const token = req.cookies.jwtToken;
 
   if (!token) {
     return res.status(401).send({ message: "No token provided!" });
@@ -15,6 +15,7 @@ const verifyToken = (req, res, next) => {
       return res.status(401).send({ message: "Unauthorized!" });
     }
     req.userId = decoded.id;
+    req.username = decoded.username;
     next();
   });
 };

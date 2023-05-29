@@ -46,14 +46,10 @@ app.get("/", (req, res) => {
   res.send("/ page");
 });
 
-app.get("/login", (req, res) => {
-  console.log("Hello login");
-  res.send("Log In page");
-});
-
-app.get("/signup", (req, res) => {
-  console.log("Hello signup");
-  res.send("Sign Up page")
+app.post("/newtransaction", authJwt.verifyToken, (req, res) => {
+  const { username, userId } = req;
+  console.log(`username: ${username}, userId: ${userId}`);
+  res.status(200).send("OK");
 });
 
 // Start the Express server
