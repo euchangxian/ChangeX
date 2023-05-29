@@ -49,8 +49,12 @@ const login = (req, res) => {
           expiresIn: 24 * 60 * 60 // 24 hours
         }
       );
-
-      // sends the token back to the client.
+      res.cookie("jwtToken", token, {
+        httpOnly: true, // Prevent client-side access to the cookie
+        secure: true, // Only send the cookie over HTTPS
+        sameSite: "strict", // Limit cookie inclusion in third-party contexts
+      });
+      // sends the token back to the client. NOTE remove this once deployed. Currently here for ease of development
       res.status(200).send({
         id: user._id,
         username: user.username,
