@@ -1,4 +1,3 @@
-import "../loadEnvironment.mjs";
 import db from "../db/conn.mjs";
 
 // users collection
