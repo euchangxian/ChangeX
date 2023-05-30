@@ -52,13 +52,13 @@ export default function NewTransactionModal() {
     e.preventDefault();
     console.log("helloworld");
     console.log(transactionType);
-    console.log(date);
+    console.log(date.format("DD/MM/YYYY"));
     console.log(category);
     console.log(description);
 
-    await axios.post("/newtransaction", {
+    await axios.post("/addtransaction", {
       type: transactionType,
-      date: date.toDate(),
+      date: date,
       category: category,
       description: description,
       amount: transactionType === "spendings" ? -amount : amount
@@ -208,7 +208,7 @@ export default function NewTransactionModal() {
             </div>
             <div style={{ marginTop: 20, display: "flex", justifyContent: "center" }}>
               <Button type="submit" variant="contained" color="primary">
-                Submit
+                Add Transaction
               </Button>
             </div>
           </form>
