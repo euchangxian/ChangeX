@@ -55,14 +55,13 @@ export default function NewTransactionModal() {
     console.log(date);
     console.log(category);
     console.log(description);
-    console.log(amount);
 
     await axios.post("/newtransaction", {
       type: transactionType,
       date: date.toDate(),
       category: category,
       description: description,
-      amount: amount
+      amount: transactionType === "spendings" ? -amount : amount
     }).then(res => {
       console.log(res);
     });
