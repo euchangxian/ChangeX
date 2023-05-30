@@ -13,6 +13,8 @@ import MenuItem from "@mui/material/MenuItem";
 import SavingsIcon from '@mui/icons-material/Savings';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { ToggleButtonGroup, ToggleButton, Typography } from "@mui/material";
+import dayjs from "dayjs";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import axios from "../apis/axios";
 
 export default function NewTransactionModal() {
@@ -26,6 +28,7 @@ export default function NewTransactionModal() {
   };
 
   const [transactionType, setTransactionType] = React.useState("spendings");
+  const [date, setDate] = React.useState(dayjs(new Date()));
   const [category, setCategory] = React.useState("");
   const [description, setDescription] = React.useState("");
   const [amount, setAmount] = React.useState();
@@ -36,21 +39,27 @@ export default function NewTransactionModal() {
     }
   };
 
+  const handleDate = (newDate) => {
+    setDate(newDate);
+  };
+
   const handleDecimalsOnValue = (value) => {
     const regex = /([0-9]*[\.|\,]{0,1}[0-9]{0,2})/s;
     return value.match(regex)[0];
   };
 
-  const handleNewTransaction = async (e) => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     console.log("helloworld");
     console.log(transactionType);
+    console.log(date);
     console.log(category);
     console.log(description);
     console.log(amount);
-    e.preventDefault();
 
     await axios.post("/newtransaction", {
       type: transactionType,
+      date: date.toDate(),
       category: category,
       description: description,
       amount: amount
@@ -91,8 +100,8 @@ export default function NewTransactionModal() {
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            height: 400,
-            width: 800,
+            height: 620,
+            width: 620,
             bgcolor: "background.paper",
             border: "2px solid #000",
             boxShadow: 24,
@@ -116,9 +125,9 @@ export default function NewTransactionModal() {
               <CloseIcon />
             </IconButton>
           </div>
-          <form onSubmit={handleNewTransaction}>
+          <form onSubmit={handleSubmit}>
             {/* div to select whether transaction is a payment or not */}
-            <div style={{ display: "flex", alignItems: "start" }}>
+            <div style={{ display: "flex", margin: "auto" }}>
               <ToggleButtonGroup
                 value={transactionType}
                 exclusive
@@ -132,6 +141,19 @@ export default function NewTransactionModal() {
                   <ShoppingCartIcon />
                 </ToggleButton>
               </ToggleButtonGroup>
+            </div>
+            <div style={{ display: "flex", margin: "auto" }}>
+              <DatePicker
+                label="Date"
+                value={date}
+                defaultValue={dayjs(new Date())}
+                slotProps={{
+                  textField: {
+                    helperText: "DD/MM/YYYY"
+                  }
+                }}
+                onChange={handleDate}
+              />
             </div>
             {/* div to select transaction category */}
             <div style={{ display: "flex", alignItems: "center" }}>
@@ -157,7 +179,7 @@ export default function NewTransactionModal() {
             </div>
             {/* div to input transaction description */}
             <div style={{ display: "flex", alignItems: "center" }}>
-              <Typography sx={{ marginRight: "20px" }}>
+              <Typography sx={{ marginRight: "5px" }}>
                 Transaction Description:
               </Typography>
               <TextField
@@ -173,7 +195,7 @@ export default function NewTransactionModal() {
             </div>
             {/* div to input amount. can only input up to 2 decimal points */}
             <div style={{ display: "flex", alignItems: "center" }}>
-              <Typography sx={{ marginRight: "20px" }}>Amount:</Typography>
+              <Typography sx={{ marginRight: "120px" }}>Amount:</Typography>
               <TextField
                 id="amount"
                 variant="outlined"
