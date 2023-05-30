@@ -4,7 +4,7 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import authRoutes from "./routes/authRoutes.mjs";
-import authJwt from "./middlewares/authJwt.mjs";
+import transactionRoutes from "./routes/transactionRoutes.mjs";
 
 const PORT = process.env.PORT || 5050;
 const app = express();
@@ -24,15 +24,14 @@ app.use(cookieParser(process.env.SECRET));
 // status 500 is sent for errors.
 app.use(authRoutes);
 
+// status 200 is sent for successful CRUD requests
+// status 500 is sent for errors.
+app.use(transactionRoutes);
+
+
 app.get("/", (req, res) => {
   console.log("Hello \"/\"");
   res.send("/ page");
-});
-
-app.post("/newtransaction", authJwt.verifyToken, (req, res) => {
-  const { username, userId } = req;
-  console.log(`username: ${username}, userId: ${userId}`);
-  res.status(200).send("OK");
 });
 
 // Start the Express server
