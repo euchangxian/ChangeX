@@ -2,8 +2,6 @@ import db from "../db/conn.mjs";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
-const users = db.collection("users");
-
 const saltRounds = 10;
 
 const signup = (req, res) => {
@@ -16,7 +14,7 @@ const signup = (req, res) => {
     username: username,
     password: hashed
   };
-  users.insertOne(newUser).then(result => {
+  db.users.insertOne(newUser).then(result => {
     console.log(`User ${newUser.username} registered successfully!`);
     return res.status(200).send({ message: "User was registered successfully!" });
 
@@ -28,7 +26,7 @@ const signup = (req, res) => {
 
 const login = (req, res) => {
   const { username, password } = req.body;
-  users.findOne({ username: username }).then(user => {
+  db.users.findOne({ username: username }).then(user => {
     if (!user) {
       console.log("User not found.");
       return res.status(400).send({ message: "User not found." });

@@ -1,4 +1,4 @@
-import { MongoClient, ServerApiVersion } from "mongodb";
+import { MongoClient, ServerApiVersion, ObjectId } from "mongodb";
 
 const connectionString = process.env.ATLAS_URI || "";
 
@@ -24,5 +24,7 @@ const dbName = "ChangeX";
 // Create references to the database in order to run
 // operations on them.
 const db = conn.db(dbName);
+db.users = db.collection("users");
+db.transactions = db.collection("transactions");
 
 export default db;
