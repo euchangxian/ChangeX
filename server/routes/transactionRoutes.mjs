@@ -1,6 +1,6 @@
 import express from "express";
 import authJwt from "../middlewares/authJwt.mjs";
-import { addTransaction, getTransactions } from "../controllers/transactionController.mjs";
+import { addTransaction, getTransactions, deleteTransaction } from "../controllers/transactionController.mjs";
 
 const router = express.Router();
 
@@ -15,5 +15,12 @@ router.get(
   authJwt.verifyToken,
   getTransactions
 )
+
+router.delete(
+  "/transactions/:id",
+  authJwt.verifyToken,
+  deleteTransaction
+);
+
 
 export default router;

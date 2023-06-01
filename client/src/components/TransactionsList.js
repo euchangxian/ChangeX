@@ -82,7 +82,7 @@ export default function TransactionsList() {
       {/*The following will require input from a database and should be show through a function. But I will leave them here for now*/}
       {firstFiveTransactions}
       <ListItem sx={{ justifyContent: "center" }}>
-        <TransactionModal allTransactions={allTransactions}/>
+        <TransactionModal allTransactions={allTransactions} fetchTransactions={fetchTransactions} />
       </ListItem>
     </List>
   );

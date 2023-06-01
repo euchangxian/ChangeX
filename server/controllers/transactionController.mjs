@@ -1,6 +1,7 @@
 import express from "express";
 const router = express.Router();
 import db from "../db/conn.mjs";
+import { ObjectId } from "mongodb";
 // Schema.
 // date - Date object, stored as ISO Date
 // userId - objectId of the user adding the transaction, stored as a string
@@ -39,6 +40,26 @@ const getTransactions = async (req, res) => {
     console.log(error);
     res.status(500).send({ message: error });
   }
-}
+};
 
-export { addTransaction, getTransactions };
+const deleteTransaction = async (req, res) => {
+  const { id } = req.params;
+  console.log(id);
+
+  try {
+    const result = await db.transactions.deleteOne({ _id: new ObjectId(id) });
+    if (result.deletedCount === 0) {
+      console.log(`No transactions with the id ${id}`);
+      res.status(404).send({ message: `No transaction found with id: ${id}` });
+    } else {
+      console.log("Successfully deleted transaction!");
+      res.status(200).send({ message: `Successfully deleted transaction with id: ${id}` });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ message: error });
+  }
+};
+
+
+export { addTransaction, getTransactions, deleteTransaction };

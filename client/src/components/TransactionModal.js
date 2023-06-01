@@ -15,17 +15,21 @@ import BeachAccessIcon from "@mui/icons-material/BeachAccess";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Divider } from "@mui/material";
+import axios from "../apis/axios";
+import dayjs from "dayjs";
 
-export default function TransactionModal({ allTransactions }) {
+export default function TransactionModal({ allTransactions, fetchTransactions }) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  // const [allTransactions, setAllTransactions] = React.useState([]);
-
-  // React.useEffect(() => {
-
-  // }, []);
+  const handleDeleteTransaction = async (id) => {
+    await axios.delete(
+      `/transactions/${id}`
+    ).then(res => {
+      fetchTransactions();
+    });
+  };
 
   const allTransactionsDisplay = allTransactions.map((transaction) => (
     <div key={transaction._id}>
@@ -41,7 +45,7 @@ export default function TransactionModal({ allTransactions }) {
           primary={transaction.description}
           secondary={
             <>
-              <span>{transaction.date}</span>
+              <span>{dayjs(transaction.date).format("ddd, DD MMM YYYY")}</span>
               <br />
               <span style={{ color: transaction.amount < 0 ? "red" : "green" }}>
                 {`${transaction.amount < 0 ? '-' : ''}$${Math.abs(transaction.amount)}`}
@@ -52,7 +56,7 @@ export default function TransactionModal({ allTransactions }) {
         <IconButton aria-label="edit">
           <EditIcon />
         </IconButton>
-        <IconButton aria-label="delete">
+        <IconButton aria-label="delete" onClick={() => handleDeleteTransaction(transaction._id)}>
           <DeleteIcon />
         </IconButton>
       </ListItem>
