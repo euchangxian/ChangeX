@@ -8,9 +8,8 @@ import db from "../db/conn.mjs";
 // amount - double ( positive <=> incoming transaction, negative <=> outgoing transaction )
 // description - string
 
-const addTransaction = (req, res) => {
-  const { userId } = req;
-  const { date, category, description, amount } = req.body;
+const addTransaction = async (req, res) => {
+  const { date, userId, category, description, amount } = req.body;
 
   db.transactions.insertOne({
     date: new Date(date),
@@ -27,4 +26,19 @@ const addTransaction = (req, res) => {
   });
 };
 
-export { addTransaction };
+const getTransactions = async (req, res) => {
+  const { userId } = req.body;
+
+  console.log(userId);
+  try {
+    const cursor = db.transactions.find({ userId: userId });
+    const transactions = await cursor.toArray();
+    console.log("Successfully retrieved transactions!");
+    res.status(200).send(transactions);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ message: error });
+  }
+}
+
+export { addTransaction, getTransactions };

@@ -8,10 +8,11 @@ const verifyToken = (req, res, next) => {
   }
   jwt.verify(token, process.env.SECRET, (error, decoded) => {
     if (error) {
+      console.log(token);
       return res.status(401).send({ message: "Unauthorized!" });
     }
-    req.userId = decoded.id;
-    req.username = decoded.username;
+    req.body.userId = decoded.id;
+    req.body.username = decoded.username;
     next();
   });
 };

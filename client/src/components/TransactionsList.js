@@ -14,61 +14,27 @@ import Divider from "@mui/material/Divider";
 import ListSubheader from "@mui/material/ListSubheader";
 import TransactionModal from "./TransactionModal";
 import NewTransactionModal from "./NewTransactionModal";
+import axios from "../apis/axios";
 
 export default function TransactionsList() {
-  const handleAddNewTransaction = () => {
-    console.log("hello wolrd");
-  };
+  const [allTransactions, setAllTransactions] = React.useState([]);
 
-  const [allTransactions, setAllTransactions] = React.useState([
-    {
-      userID: "1",
-      amount: 30,
-      category: "Entertainment",
-      date: "19 Jan 2023",
-      description: "Fifty Fifty concert tickets",
-    },
-    {
-      userID: "1",
-      amount: 20,
-      category: "Work",
-      date: "19 Jan 2023",
-      description: "Fifty Fifty concert tickets",
-    },
-    {
-      userID: "1",
-      amount: 30,
-      category: "Vacation",
-      date: "19 Jan 2023",
-      description: "Fifty Fifty concert tickets",
-    },
-    {
-      userID: "1",
-      amount: 30,
-      category: "Entertainment",
-      date: "19 Jan 2023",
-      description: "Fifty Fifty concert tickets",
-    },
-    {
-      userID: "1",
-      amount: 20,
-      category: "Work",
-      date: "19 Jan 2023",
-      description: "Fifty Fifty concert tickets",
-    },
-    {
-      userID: "1",
-      amount: 30,
-      category: "Vacation",
-      date: "19 Jan 2023",
-      description: "Fifty Fifty concert tickets",
-    },
-  ]);
+  const fetchTransactions = async () => {
+    await axios.get(
+      "/transactions" // Possibly have to add another argument passing in page number as request parameter.
+    ).then(result => {
+      setAllTransactions(result.data);
+    });
+  }
+
+  React.useEffect(() => {
+    fetchTransactions();
+  }, []);
 
   const firstFiveTransactions = allTransactions
     .slice(0, 5)
     .map((transaction) => (
-      <>
+      <div key={transaction._id}>
         <ListItem>
           <ListItemAvatar>
             <Avatar>
@@ -89,7 +55,7 @@ export default function TransactionsList() {
           />
         </ListItem>
         <Divider variant="inset" component="li" />
-      </>
+      </div>
     ));
 
   return (
