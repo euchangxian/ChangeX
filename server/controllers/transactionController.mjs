@@ -32,7 +32,7 @@ const getTransactions = async (req, res) => {
   console.log(userId);
   try {
     const cursor = db.transactions.find({ userId: userId });
-    const transactions = await cursor.toArray();
+    const transactions = await cursor.sort({ date: -1 }).toArray();
     console.log("Successfully retrieved transactions!");
     res.status(200).send(transactions);
   } catch (error) {

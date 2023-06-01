@@ -15,6 +15,7 @@ import ListSubheader from "@mui/material/ListSubheader";
 import TransactionModal from "./TransactionModal";
 import NewTransactionModal from "./NewTransactionModal";
 import axios from "../apis/axios";
+import dayjs from "dayjs";
 
 export default function TransactionsList() {
   const [allTransactions, setAllTransactions] = React.useState([]);
@@ -45,13 +46,16 @@ export default function TransactionsList() {
           </ListItemAvatar>
           <ListItemText
             primary={transaction.description}
-            secondary={transaction.date}
+            secondary={dayjs(transaction.date).format("ddd, DD MMM YYYY")}
           />
           <ListItemText
             primaryTypographyProps={{
-              style: { color: "red", textAlign: "right" },
+              style: {
+                textAlign: "right",
+                color: transaction.amount < 0 ? "red" : "green"
+              },
             }}
-            primary={`-$${transaction.amount.toFixed(2)}`}
+            primary={`${transaction.amount < 0 ? '-' : ''}$${Math.abs(transaction.amount)}`}
           />
         </ListItem>
         <Divider variant="inset" component="li" />

@@ -49,7 +49,8 @@ export default function NewTransactionModal() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    // removed e.preventDefault() to autoclose modal on form submission and trigger re-rendering of transactionList
+    // e.preventDefault();
     console.log("helloworld");
     console.log(transactionType);
     console.log(date.format("DD/MM/YYYY"));
