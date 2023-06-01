@@ -4,10 +4,8 @@ import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
-
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
-import ListSubheader from "@mui/material/ListSubheader";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import ListItemText from "@mui/material/ListItemText";
@@ -16,59 +14,21 @@ import WorkIcon from "@mui/icons-material/Work";
 import BeachAccessIcon from "@mui/icons-material/BeachAccess";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { Divider } from "@mui/material";
 
-export default function TransactionModal() {
+export default function TransactionModal({ allTransactions }) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const [allTransactions, setAllTransactions] = React.useState([
-    {
-      userID: "1",
-      amount: 30,
-      category: "Entertainment",
-      date: "19 Jan 2023",
-      description: "Fifty Fifty concert tickets",
-    },
-    {
-      userID: "1",
-      amount: 20,
-      category: "Work",
-      date: "19 Jan 2023",
-      description: "Fifty Fifty concert tickets",
-    },
-    {
-      userID: "1",
-      amount: 30,
-      category: "Vacation",
-      date: "19 Jan 2023",
-      description: "Fifty Fifty concert tickets",
-    },
-    {
-      userID: "1",
-      amount: 30,
-      category: "Entertainment",
-      date: "19 Jan 2023",
-      description: "Fifty Fifty concert tickets",
-    },
-    {
-      userID: "1",
-      amount: 20,
-      category: "Work",
-      date: "19 Jan 2023",
-      description: "Fifty Fifty concert tickets",
-    },
-    {
-      userID: "1",
-      amount: 30,
-      category: "Vacation",
-      date: "19 Jan 2023",
-      description: "Fifty Fifty concert tickets",
-    },
-  ]);
+  // const [allTransactions, setAllTransactions] = React.useState([]);
+
+  // React.useEffect(() => {
+
+  // }, []);
 
   const allTransactionsDisplay = allTransactions.map((transaction) => (
-    <>
+    <div key={transaction._id}>
       <ListItem>
         <ListItemAvatar>
           <Avatar>
@@ -83,8 +43,8 @@ export default function TransactionModal() {
             <>
               <span>{transaction.date}</span>
               <br />
-              <span style={{ color: "red" }}>
-                -${transaction.amount.toFixed(2)}
+              <span style={{ color: transaction.amount < 0 ? "red" : "green" }}>
+                {`${transaction.amount < 0 ? '-' : ''}$${Math.abs(transaction.amount)}`}
               </span>
             </>
           }
@@ -96,7 +56,8 @@ export default function TransactionModal() {
           <DeleteIcon />
         </IconButton>
       </ListItem>
-    </>
+      <Divider variant="fullWidth" component="li" />
+    </div>
   ));
 
   return (
@@ -124,7 +85,7 @@ export default function TransactionModal() {
             flexDirection: "column",
           }}
         >
-          <div style={{ display: "flex", alignItems: "center", marginTop:-20 }}>
+          <div style={{ display: "flex", alignItems: "center", marginTop: -20 }}>
             <h2 style={{ flexGrow: 1 }}>All Transactions</h2>
             <IconButton
               aria-label="delete"

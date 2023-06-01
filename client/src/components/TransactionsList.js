@@ -1,12 +1,9 @@
 import * as React from "react";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
-import AddIcon from "@mui/icons-material/Add";
 import ImageIcon from "@mui/icons-material/Image";
 import WorkIcon from "@mui/icons-material/Work";
 import BeachAccessIcon from "@mui/icons-material/BeachAccess";
@@ -85,7 +82,7 @@ export default function TransactionsList() {
       {/*The following will require input from a database and should be show through a function. But I will leave them here for now*/}
       {firstFiveTransactions}
       <ListItem sx={{ justifyContent: "center" }}>
-        <TransactionModal />
+        <TransactionModal allTransactions={allTransactions}/>
       </ListItem>
     </List>
   );
