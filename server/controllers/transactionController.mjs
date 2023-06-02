@@ -71,8 +71,11 @@ const getSpendingByMonthYear = async (req, res) => {
       },
     ])
     .toArray();
-  const spending = cursor[0].totalAmount;
-  res.status(200).json(spending);
+
+  if (cursor.length === 0) {
+    return res.status(200).json(0);
+  }
+  return res.status(200).json(cursor[0].totalAmount);
 };
 
 const deleteTransaction = async (req, res) => {
