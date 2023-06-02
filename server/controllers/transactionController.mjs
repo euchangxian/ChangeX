@@ -71,7 +71,6 @@ const getSpendingByMonthYear = async (req, res) => {
       },
     ])
     .toArray();
-
   if (cursor.length === 0) {
     return res.status(200).json(0);
   }

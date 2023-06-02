@@ -5,6 +5,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import authRoutes from "./routes/authRoutes.mjs";
 import transactionRoutes from "./routes/transactionRoutes.mjs";
+import budgetRoutes from "./routes/budgetRoutes.mjs";
 
 const PORT = process.env.PORT || 5050;
 const app = express();
@@ -12,14 +13,14 @@ app.use(
   cors({
     origin: "http://localhost:3000",
     credentials: true,
-    optionsSuccessStatus: 200
+    optionsSuccessStatus: 200,
   })
 );
 app.use(bodyParser.json());
 app.use(cookieParser(process.env.SECRET));
 
 // TODO: Load routes
-// status 200 is sent for successful login/signup. 
+// status 200 is sent for successful login/signup.
 // status 400 is sent for incorrect username/password.
 // status 500 is sent for errors.
 app.use(authRoutes);
@@ -28,14 +29,14 @@ app.use(authRoutes);
 // status 500 is sent for errors.
 app.use(transactionRoutes);
 
+app.use(budgetRoutes);
 
 app.get("/", (req, res) => {
-  console.log("Hello \"/\"");
+  console.log('Hello "/"');
   res.send("/ page");
 });
 
 // Start the Express server
 app.listen(PORT, () => {
-  console.log(
-    `Server is running on port: ${PORT}`); // Wrap string within ` (backtick) instead of " for string formatting
+  console.log(`Server is running on port: ${PORT}`); // Wrap string within ` (backtick) instead of " for string formatting
 });
