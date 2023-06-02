@@ -31,7 +31,7 @@ export default function NewTransactionModal() {
   const [date, setDate] = React.useState(dayjs(new Date()));
   const [category, setCategory] = React.useState("");
   const [description, setDescription] = React.useState("");
-  const [amount, setAmount] = React.useState();
+  const [amount, setAmount] = React.useState("");
 
   const handleTransactionType = (event, newTransactionType) => {
     if (newTransactionType != null) {
@@ -49,10 +49,7 @@ export default function NewTransactionModal() {
   };
 
   const handleSubmit = async (e) => {
-    // removed e.preventDefault() to autoclose modal on form submission and trigger re-rendering of transactionList
-    console.log("helloworld");
-    console.log(transactionType);
-    console.log(date);
+    // removed e.preventDefault() to autoclose modal on form submission and trigger re-rendering of transactionListlog(date);
     console.log(category);
     console.log(description);
 
