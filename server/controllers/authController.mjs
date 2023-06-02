@@ -69,4 +69,9 @@ const logout = (req, res) => {
   res.status(200).send("Logout successful");
 };
 
-export { signup, login, logout };
+const getUser = (req, res) => {
+  const { username } = req.body;
+  res.status(200).send(username);
+};
+
+export { signup, login, logout, getUser };

@@ -1,6 +1,7 @@
 import express from "express";
 import verifySignUp from "../middlewares/verifySignUp.mjs";
-import { signup, login, logout } from "../controllers/authController.mjs";
+import { signup, login, logout, getUser } from "../controllers/authController.mjs";
+import authJwt from "../middlewares/authJwt.mjs";
 
 const router = express.Router();
 router.use((req, res, next) => {
@@ -25,6 +26,12 @@ router.post(
 router.post(
   "/logout",
   logout
+);
+
+router.get(
+  "/user",
+  authJwt.verifyToken,
+  getUser
 );
 
 export default router;

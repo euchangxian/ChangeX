@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { AppBar, Toolbar, Typography, Button, IconButton } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import LoginIcon from "@mui/icons-material/Login";
@@ -7,6 +8,22 @@ import { useNavigate } from "react-router-dom";
 export default function TopBar(props) {
   const handleDrawerToggle = props.handleDrawerToggle;
   const drawerWidth = props.drawerWidth;
+
+  const [username, setUsername] = useState();
+
+  const fetchUser = async () => {
+    console.log("Fetching user...");
+    await axios.get(
+      "/user"
+    ).then(res => {
+      console.log(res.data);
+      setUsername(res.data);
+    });
+  }
+
+  useEffect(() => {
+    fetchUser();
+  });
 
   const navigate = useNavigate();
   const handleLogoutButtonClick = async () => {
@@ -38,7 +55,7 @@ export default function TopBar(props) {
           <MenuIcon />
         </IconButton>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          ChangeX
+          {username}
         </Typography>
         {/* Log out button */}
         <Button
