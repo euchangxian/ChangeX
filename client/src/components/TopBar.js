@@ -1,19 +1,23 @@
-import { useState } from "react";
 import { AppBar, Toolbar, Typography, Button, IconButton } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import LoginIcon from "@mui/icons-material/Login";
-import AuthModal from "./AuthModal";
+import axios from "../apis/axios";
+import { useNavigate } from "react-router-dom";
 
 export default function TopBar(props) {
   const handleDrawerToggle = props.handleDrawerToggle;
   const drawerWidth = props.drawerWidth;
 
-  // Logic for handling rendering of AuthModal.
-  const [isAuthModalOpen, setAuthModalOpen] = useState(false);
-  const handleAuthButtonClick = () => {
-    setAuthModalOpen(!isAuthModalOpen);
+  const navigate = useNavigate();
+  const handleLogoutButtonClick = async () => {
+    console.log("Logging out user...");
+    await axios.post(
+      "/logout"
+    ).then(res => {
+      console.log("User logged out successfully!");
+      navigate("/");
+    });
   };
-
 
   return (
     <AppBar
@@ -36,16 +40,15 @@ export default function TopBar(props) {
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           ChangeX
         </Typography>
-        {/* Sign in button */}
+        {/* Log out button */}
         <Button
           variant="outlined"
           color="inherit"
           startIcon={<LoginIcon />}
-          onClick={handleAuthButtonClick}
+          onClick={handleLogoutButtonClick}
         >
-          Sign In
+          Log Out
         </Button>
-        <AuthModal isAuthModalOpen={isAuthModalOpen} handleAuthButtonClick={handleAuthButtonClick} />
       </Toolbar>
     </AppBar>
   );
