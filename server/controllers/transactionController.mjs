@@ -1,5 +1,4 @@
 import express from "express";
-const router = express.Router();
 import db from "../db/conn.mjs";
 import { ObjectId } from "mongodb";
 // Schema.
@@ -20,11 +19,11 @@ const addTransaction = async (req, res) => {
       amount: amount,
       description: description,
     })
-    .then((result) => {
+    .then(result => {
       console.log("Transaction added successfully!");
       res.status(200).send({ message: `Transaction added successfully!` });
     })
-    .catch((error) => {
+    .catch(error => {
       console.log(error);
       res.status(500).send({ message: error });
     });

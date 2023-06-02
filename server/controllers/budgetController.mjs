@@ -1,7 +1,4 @@
-import express from "express";
-const router = express.Router();
 import db from "../db/conn.mjs";
-import { ObjectId } from "mongodb";
 // Schema.
 // date - Date object, stored as ISO Date
 // userId - objectId of the user who set the budget, stored as a string
@@ -15,11 +12,11 @@ const addBudget = async (req, res) => {
       userId: userId,
       amount: amount,
     })
-    .then((result) => {
+    .then(result => {
       console.log("Budget added successfully!");
       res.status(200).send({ message: `Budget added successfully!` });
     })
-    .catch((error) => {
+    .catch(error => {
       console.log(error);
       res.status(500).send({ message: error });
     });
@@ -48,12 +45,10 @@ const updateBudget = async (req, res) => {
     console.log(result);
     if (result.modifiedCount === 0) {
       console.log(`No such budget`);
-      res.status(400).send({ message: `No budget found with` });
+      res.status(400).send({ message: `No budget found` });
     } else {
       console.log("Successfully updated budget!");
-      res
-        .status(200)
-        .send({ message: `Successfully updated budget` });
+      res.status(200).send({ message: `Successfully updated budget` });
     }
   } catch (error) {
     console.log(error);
@@ -79,7 +74,7 @@ const getBudget = async (req, res) => {
         $lt: end,
       },
     })
-    .then((budget) => {
+    .then(budget => {
       if (!budget) {
         console.log("Budget not found.");
         return res.status(400).send({ message: "Budget not found." });
