@@ -26,21 +26,34 @@ const addBudget = async (req, res) => {
 };
 
 const updateBudget = async (req, res) => {
-  const { id } = req.params;
-  const { newAmount } = req.body;
+  const { date } = req.params;
+  const { userId, newAmount } = req.body;
+
+  const dateObj = new Date(date);
+  const month = dateObj.getMonth();
+  const year = dateObj.getFullYear();
+  const start = new Date(year, month, 1);
+  const end = new Date(year, month + 1, 1);
   try {
     const result = await db.budgets.updateOne(
-      { _id: new ObjectId(id) },
-      { $set:{amount: newAmount} }
+      {
+        userId: userId,
+        date: {
+          $gte: start,
+          $lt: end,
+        },
+      },
+      { $set: { amount: newAmount } }
     );
+    console.log(result);
     if (result.modifiedCount === 0) {
-      console.log(`No budgets with the id ${id}`);
-      res.status(400).send({ message: `No budget found with id: ${id}` });
+      console.log(`No such budget`);
+      res.status(400).send({ message: `No budget found with` });
     } else {
       console.log("Successfully updated budget!");
       res
         .status(200)
-        .send({ message: `Successfully updated budget with id: ${id}` });
+        .send({ message: `Successfully updated budget` });
     }
   } catch (error) {
     console.log(error);
@@ -75,8 +88,4 @@ const getBudget = async (req, res) => {
     });
 };
 
-export {
-  addBudget,
-  updateBudget,
-  getBudget,
-};
+export { addBudget, updateBudget, getBudget };

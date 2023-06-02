@@ -58,7 +58,7 @@ export default function NewTransactionModal() {
       date: date,
       category: category,
       description: description,
-      amount: transactionType === "spendings" ? -amount : amount
+      amount: transactionType === "spendings" ? -amount : parseInt(amount)
     }).then(res => {
       console.log(res);
     });

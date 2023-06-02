@@ -10,7 +10,7 @@ const router = express.Router();
 
 router.post("/addbudget", authJwt.verifyToken, addBudget);
 
-router.post("/updatebudget/:id", authJwt.verifyToken, updateBudget);
+router.post("/updatebudget/:date", authJwt.verifyToken, updateBudget);
 
 router.get("/getbudget/:date", authJwt.verifyToken, getBudget);
 
