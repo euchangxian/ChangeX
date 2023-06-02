@@ -26,5 +26,6 @@ const dbName = "ChangeX";
 const db = conn.db(dbName);
 db.users = db.collection("users");
 db.transactions = db.collection("transactions");
+db.budgets = db.collection("budgets");
 
 export default db;

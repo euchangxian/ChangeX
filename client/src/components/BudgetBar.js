@@ -20,7 +20,6 @@ export default function BudgetBar({ allTransactions }) {
 
   const [spending, setSpending] = React.useState([]);
   const [budgetPct, setBudgetPct] = React.useState(0);
-  const [onTrackPct, setOnTrackPct] = React.useState([]);
 
   const fetchSpendingByMonthYear = () => {
     const date = dayjs();
@@ -39,11 +38,6 @@ export default function BudgetBar({ allTransactions }) {
   React.useEffect(() => {
     fetchSpendingByMonthYear();
   }, [allTransactions]);
-
-  React.useEffect(() => {
-    setBudgetPct((spending / budget) * 100);
-    setOnTrackPct(budgetPct / datePct);
-  }, [spending]);
 
   return (
     <Box sx={{ margin: "16px" }}>
@@ -65,9 +59,9 @@ export default function BudgetBar({ allTransactions }) {
       <Box flexGrow={1}>
         <LinearProgress
           variant="determinate"
-          value={budgetPct}
+          value={(spending/budget) * 100}
           sx={{ height: 10 }}
-          color={budgetPct / datePct < 100 ? "primary" : "error"}
+          color={(100 * (spending/budget)) / datePct < 100 ? "primary" : "error"}
         />
       </Box>
     </Box>
