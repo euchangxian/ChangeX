@@ -8,22 +8,27 @@ import axios from "../apis/axios";
 import { toast } from "react-toastify";
 import dayjs from "dayjs";
 
-export default function BudgetBar() {
+export default function BudgetBar({ allTransactions }) {
   const [userMonthlyBudget, setUserMonthlyBudget] = React.useState({
     user_id: 1,
     budget: 1500,
     startDate: "Jan",
   });
 
-  const [spending, setSpending] = React.useState(0);
+  const budget = 15000;
+  const datePct = new Date().getDate() / 30;
 
-  const fetchSpendingByMonthYear = async () => {
+  const [spending, setSpending] = React.useState([]);
+  const [budgetPct, setBudgetPct] = React.useState(0);
+  const [onTrackPct, setOnTrackPct] = React.useState([]);
+
+  const fetchSpendingByMonthYear = () => {
     const date = dayjs();
-    await axios
+    axios
       .get(`/getspending/${date}`)
       .then((result) => {
         if (result.status == 200) {
-          setSpending(result.data);
+          setSpending(-result.data);
         }
       })
       .catch((error) => {
@@ -33,17 +38,12 @@ export default function BudgetBar() {
 
   React.useEffect(() => {
     fetchSpendingByMonthYear();
-  }, []);
+  }, [allTransactions]);
 
-  const budget = 150;
-  const budgetPct = (spending * 100) / budget;
-  const datePct = new Date().getDate() / 30;
-  const onTrackPct = budgetPct / datePct;
-
-  let progressBarColor = "primary";
-  if (onTrackPct > 100) {
-    progressBarColor = "error";
-  }
+  React.useEffect(() => {
+    setBudgetPct((spending / budget) * 100);
+    setOnTrackPct(budgetPct / datePct);
+  }, [spending]);
 
   return (
     <Box sx={{ margin: "16px" }}>
@@ -67,7 +67,7 @@ export default function BudgetBar() {
           variant="determinate"
           value={budgetPct}
           sx={{ height: 10 }}
-          color={progressBarColor}
+          color={budgetPct / datePct < 100 ? "primary" : "error"}
         />
       </Box>
     </Box>

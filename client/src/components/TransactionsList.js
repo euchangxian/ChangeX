@@ -14,16 +14,16 @@ import NewTransactionModal from "./NewTransactionModal";
 import axios from "../apis/axios";
 import dayjs from "dayjs";
 
-export default function TransactionsList() {
-  const [allTransactions, setAllTransactions] = React.useState([]);
-
+export default function TransactionsList({ allTransactions, setAllTransactions }) {
   const fetchTransactions = async () => {
-    await axios.get(
-      "/transactions" // Possibly have to add another argument passing in page number as request parameter.
-    ).then(result => {
-      setAllTransactions(result.data);
-    });
-  }
+    await axios
+      .get(
+        "/transactions" // Possibly have to add another argument passing in page number as request parameter.
+      )
+      .then((result) => {
+        setAllTransactions(result.data);
+      });
+  };
 
   React.useEffect(() => {
     fetchTransactions();
@@ -49,10 +49,12 @@ export default function TransactionsList() {
             primaryTypographyProps={{
               style: {
                 textAlign: "right",
-                color: transaction.amount < 0 ? "red" : "green"
+                color: transaction.amount < 0 ? "red" : "green",
               },
             }}
-            primary={`${transaction.amount < 0 ? '-' : ''}$${Math.abs(transaction.amount)}`}
+            primary={`${transaction.amount < 0 ? "-" : ""}$${Math.abs(
+              transaction.amount
+            )}`}
           />
         </ListItem>
         <Divider variant="inset" component="li" />
@@ -82,7 +84,10 @@ export default function TransactionsList() {
       {/*The following will require input from a database and should be show through a function. But I will leave them here for now*/}
       {firstFiveTransactions}
       <ListItem sx={{ justifyContent: "center" }}>
-        <TransactionModal allTransactions={allTransactions} fetchTransactions={fetchTransactions} />
+        <TransactionModal
+          allTransactions={allTransactions}
+          fetchTransactions={fetchTransactions}
+        />
       </ListItem>
     </List>
   );
