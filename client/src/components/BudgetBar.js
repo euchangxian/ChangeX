@@ -1,15 +1,15 @@
 import * as React from "react";
-import LinearProgress, {
-  LinearProgressProps,
-} from "@mui/material/LinearProgress";
+import LinearProgress from "@mui/material/LinearProgress";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import axios from "../apis/axios";
 import { toast } from "react-toastify";
 import dayjs from "dayjs";
+import { Button, IconButton, InputAdornment, TextField } from "@mui/material";
+import PublishIcon from "@mui/icons-material/Publish";
 
 export default function BudgetBar({ allTransactions }) {
+  const currentDate = dayjs();
   const datePct = new Date().getDate() / 30;
 
   const [budget, setBudget] = React.useState(0);
@@ -17,17 +17,24 @@ export default function BudgetBar({ allTransactions }) {
   const [onTrackPct, setOnTrackPct] = React.useState(0);
   const [budgetInput, setBudgetInput] = React.useState("");
 
-  const handleInputChange = (event) => {
+  const handleInputChange = event => {
     const value = event.target.value;
     setBudgetInput(value);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = event => {
     event.preventDefault();
     const newBudget = parseInt(budgetInput);
-    if (!/^\d+$/.test(budgetInput) || newBudget < 1 || parseInt(budget) === newBudget) {
+    if (
+      !/^\d+$/.test(budgetInput) ||
+      newBudget < 1 ||
+      parseInt(budget) === newBudget
+    ) {
       // Handle the submission of invalid budget
-      toast.error("Invalid budget");
+      setBudgetInput("");
+      return toast.error(
+        "Invalid budget. Enter only positive numeric values -.-"
+      );
     } else if (budget === 0) {
       addBudget(budgetInput);
     } else {
@@ -35,53 +42,54 @@ export default function BudgetBar({ allTransactions }) {
     }
   };
 
-  const fetchSpendingByMonthYear = () => {
-    const date = dayjs();
-    axios
+  const fetchSpendingByMonthYear = async () => {
+    const date = currentDate;
+    await axios
       .get(`/getspending/${date}`)
-      .then((result) => {
+      .then(result => {
         if (result.status == 200) {
           setSpending(-result.data);
         }
       })
-      .catch((error) => {
+      .catch(error => {
         toast.error("Failed to get spending!");
       });
   };
 
-  const getBudget = () => {
-    const date = dayjs();
-    axios
+  const getBudget = async () => {
+    const date = currentDate;
+    await axios
       .get(`/getbudget/${date}`)
-      .then((result) => {
+      .then(result => {
         if (result.status == 200) {
           setBudget(result.data.amount);
         }
       })
-      .catch((error) => {
+      .catch(error => {
         toast.error("Failed to get budget!");
       });
   };
 
-  const addBudget = (amount) => {
-    const date = dayjs();
-    axios
+  const addBudget = async amount => {
+    const date = currentDate;
+    await axios
       .post(`/addbudget`, {
         date: date,
         amount: amount,
       })
-      .then((result) => {
+      .then(result => {
         getBudget();
       });
   };
 
-  const updateBudget = (amount) => {
-    const date = dayjs();
-    axios
+  const updateBudget = async amount => {
+    const date = currentDate;
+    await axios
       .post(`/updatebudget/${date}`, { newAmount: amount })
-      .then((result) => {
+      .then(result => {
         getBudget();
       });
+    setBudgetInput("");
   };
 
   React.useEffect(() => {
@@ -101,7 +109,7 @@ export default function BudgetBar({ allTransactions }) {
       <Box display="flex" flexDirection="row" alignItems="center" mb={2}>
         <Box flexGrow={1}>
           <Typography variant="h4">
-            Your budget for {dayjs().format("MMMM")}
+            Your budget for {currentDate.format("MMMM")}
           </Typography>
         </Box>
         <Box>
@@ -127,21 +135,40 @@ export default function BudgetBar({ allTransactions }) {
         alignItems="center"
         marginTop="10px"
       >
-        <Typography>
-          {onTrackPct < 100
-            ? "You are on track to meet you budget. Good Job!"
-            : "Oh no, you are projected to exceed your budget."}
+        <Typography variant="h6" color={onTrackPct < 100 ? "green" : "red"}>
+          {budget === 0
+            ? `Add budget for ${currentDate.format("MMMM")}! >>>`
+            : onTrackPct < 100
+            ? "You are on track to meet your budget. Good job :)"
+            : "Oh no, you are projected to exceed your budget at this rate :("}
         </Typography>
-        <form onSubmit={handleSubmit}>
-          <input
+        <Box component="form" onSubmit={handleSubmit}>
+          <TextField
             type="text"
             value={budgetInput}
             onChange={handleInputChange}
-            placeholder="New Budget"
+            label={`Budget for ${currentDate.format("MMMM")}`}
+            placeholder="8888.88"
             required
+            InputProps={{
+              startAdornment: <InputAdornment>$</InputAdornment>,
+              endAdornment: (
+                <InputAdornment
+                  position="end"
+                  sx={{
+                    marginRight: "-13px", // Adjust this value to align the button
+                  }}
+                >
+                  <Button variant="contained" type="submit">
+                    <IconButton>
+                      <PublishIcon />
+                    </IconButton>
+                  </Button>
+                </InputAdornment>
+              ),
+            }}
           />
-          <Button type="submit">Set Budget</Button>
-        </form>
+        </Box>
       </Box>
     </Box>
   );
