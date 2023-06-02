@@ -49,12 +49,12 @@ const getSpendingByMonthYear = async (req, res) => {
   const { userId } = req.body;
   const { date } = req.params;
   const dateObj = new Date(date);
-  const month = dateObj.getFullYear();
-  const year = dateObj.getMonth();
-  console.log(typeof month);
-  console.log(typeof year);
-  const start = new Date(2023, 5, 1);
-  const end = new Date(2023, 6, 1);
+
+  const month = dateObj.getMonth();
+  const year = dateObj.getFullYear();
+
+  const start = new Date(year, month, 1);
+  const end = new Date(year, month + 1, 1);
 
   const cursor = await db.transactions
     .aggregate([
@@ -71,14 +71,12 @@ const getSpendingByMonthYear = async (req, res) => {
       },
     ])
     .toArray();
-  const spending = cursor.totalAmount;
-  console.log(cursor[0].totalAmount);
-  res.status(200).send(spending);
+  const spending = cursor[0].totalAmount;
+  res.status(200).json(spending);
 };
 
 const deleteTransaction = async (req, res) => {
   const { id } = req.params;
-  console.log(id);
 
   try {
     const result = await db.transactions.deleteOne({ _id: new ObjectId(id) });

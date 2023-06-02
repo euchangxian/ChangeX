@@ -16,7 +16,6 @@ export default function TopBar(props) {
     await axios.get(
       "/user"
     ).then(res => {
-      console.log(res.data);
       setUsername(res.data);
     });
   }
