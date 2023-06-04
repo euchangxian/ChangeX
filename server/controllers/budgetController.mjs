@@ -76,7 +76,6 @@ const getBudget = async (req, res) => {
     })
     .then(budget => {
       if (!budget) {
-        console.log("Budget not found.");
         return res.status(200).json(0);
       }
       return res.status(200).json(budget.amount);

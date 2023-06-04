@@ -5,7 +5,7 @@ import Box from "@mui/material/Box";
 import axios from "../apis/axios";
 import { toast } from "react-toastify";
 import dayjs from "dayjs";
-import { Button, IconButton, InputAdornment, TextField } from "@mui/material";
+import { IconButton, InputAdornment, TextField } from "@mui/material";
 import PublishIcon from "@mui/icons-material/Publish";
 
 export default function BudgetBar({ allTransactions }) {
@@ -49,7 +49,7 @@ export default function BudgetBar({ allTransactions }) {
     await axios
       .get(`/getspending/${date}`)
       .then(result => {
-        if (result.status == 200) {
+        if (result.status === 200) {
           setSpending(-result.data);
         }
       })
@@ -63,7 +63,7 @@ export default function BudgetBar({ allTransactions }) {
     await axios
       .get(`/getbudget/${date}`)
       .then(result => {
-        if (result.status == 200) {
+        if (result.status === 200) {
           setBudget(result.data);
         }
       })
@@ -153,7 +153,9 @@ export default function BudgetBar({ allTransactions }) {
             placeholder="8888.88"
             required
             InputProps={{
-              startAdornment: <InputAdornment>$</InputAdornment>,
+              startAdornment: (
+                <InputAdornment position="start">$</InputAdornment>
+              ),
               endAdornment: (
                 <InputAdornment
                   position="end"
@@ -161,11 +163,9 @@ export default function BudgetBar({ allTransactions }) {
                     marginRight: "-13px", // Adjust this value to align the button
                   }}
                 >
-                  <Button variant="contained" type="submit">
-                    <IconButton>
-                      <PublishIcon />
-                    </IconButton>
-                  </Button>
+                  <IconButton>
+                    <PublishIcon />
+                  </IconButton>
                 </InputAdornment>
               ),
             }}

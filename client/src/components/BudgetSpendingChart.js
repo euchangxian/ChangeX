@@ -11,12 +11,14 @@ import {
   Tooltip,
   Legend,
 } from "recharts";
+import { LinearProgress } from "@mui/material";
 
 export default function BudgetSpendingChart() {
+  const [isDataFetched, setIsDataFetched] = useState(false);
   const [data, setData] = useState([]);
   const [year, setYear] = useState(dayjs().year());
 
-  const populateData = async (year) => {
+  const populateData = async year => {
     const janInYear = dayjs(new Date(year, 0));
     const dataTmp = [];
 
@@ -35,23 +37,24 @@ export default function BudgetSpendingChart() {
   };
 
   useEffect(() => {
-    populateData(year).then((result) => {
-        setData(result);
-        console.log(result);
-    })
+    populateData(year).then(result => {
+      setData(result);
+      setIsDataFetched(true);
+      console.log(result);
+    });
   }, [year]);
 
-  return (
-    <Box>
-      <BarChart width={730} height={250} data={data}>
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="month" />
-        <YAxis />
-        <Tooltip />
-        <Legend />
-        <Bar dataKey="spending" fill="#8884d8" />
-        <Bar dataKey="budget" fill="#82ca9d" />
-      </BarChart>
-    </Box>
+  const chart = (
+    <BarChart width={730} height={250} data={data}>
+      <CartesianGrid strokeDasharray="3 3" />
+      <XAxis dataKey="month" />
+      <YAxis />
+      <Tooltip />
+      <Legend />
+      <Bar dataKey="spending" fill="#8884d8" />
+      <Bar dataKey="budget" fill="#82ca9d" />
+    </BarChart>
   );
+
+  return <Box>{isDataFetched ? chart : <LinearProgress />}</Box>;
 }
