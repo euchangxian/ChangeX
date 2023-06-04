@@ -10,7 +10,7 @@ const addBudget = async (req, res) => {
     .insertOne({
       date: new Date(date),
       userId: userId,
-      amount: amount,
+      amount: parseInt(amount),
     })
     .then(result => {
       console.log("Budget added successfully!");
@@ -40,7 +40,7 @@ const updateBudget = async (req, res) => {
           $lt: end,
         },
       },
-      { $set: { amount: newAmount } }
+      { $set: { amount: parseInt(newAmount) } }
     );
     console.log(result);
     if (result.modifiedCount === 0) {
@@ -77,9 +77,9 @@ const getBudget = async (req, res) => {
     .then(budget => {
       if (!budget) {
         console.log("Budget not found.");
-        return res.status(400).send({ message: "Budget not found." });
+        return res.status(200).json(0);
       }
-      return res.status(200).send(budget);
+      return res.status(200).json(budget.amount);
     });
 };
 

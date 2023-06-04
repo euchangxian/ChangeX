@@ -35,6 +35,8 @@ export default function BudgetBar({ allTransactions }) {
       return toast.error(
         "Invalid budget. Enter only positive numeric values -.-"
       );
+      // When there is no budget, it is set to 0. So if budget is set to zero, then addBudget/
+      // No allowed to add / update budget to 0.
     } else if (budget === 0) {
       addBudget(budgetInput);
     } else {
@@ -62,7 +64,7 @@ export default function BudgetBar({ allTransactions }) {
       .get(`/getbudget/${date}`)
       .then(result => {
         if (result.status == 200) {
-          setBudget(result.data.amount);
+          setBudget(result.data);
         }
       })
       .catch(error => {
