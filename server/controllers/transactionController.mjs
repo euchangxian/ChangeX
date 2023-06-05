@@ -18,11 +18,11 @@ const addTransaction = async (req, res) => {
       amount: amount,
       description: description,
     })
-    .then(result => {
+    .then((result) => {
       console.log("Transaction added successfully!");
       res.status(200).send({ message: `Transaction added successfully!` });
     })
-    .catch(error => {
+    .catch((error) => {
       console.log(error);
       res.status(500).send({ message: error });
     });
@@ -95,9 +95,33 @@ const deleteTransaction = async (req, res) => {
   }
 };
 
+const getSpendingByCategoryInYear = async (req, res) => {
+  const { year } = req.params;
+  const { userId } = req.body;
+
+  const start = new Date(parseInt(year));
+  const end = new Date(parseInt(year) + 1);
+
+  const cursor = await db.transactions
+    .aggregate([
+      {
+        $match: {
+          $and: [{ userId: userId }, { date: { $gte: start, $lt: end } }],
+        },
+      },
+      { $group: { _id: "$category", total: { $sum: "$amount" } } },
+    ])
+    .toArray();
+  if (cursor.length === 0) {
+    return res.status(200).json(null);
+  }
+  return res.status(200).send(cursor);
+};
+
 export {
   addTransaction,
   getTransactions,
   getSpendingByMonthYear,
   deleteTransaction,
+  getSpendingByCategoryInYear,
 };
