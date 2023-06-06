@@ -110,7 +110,13 @@ const getSpendingByCategoryInYear = async (req, res) => {
         },
       },
       { $group: { _id: "$category", total: { $sum: "$amount" } } },
-      { $project: { _id: 0, name: "$_id", value: "$total" } },
+      {
+        $project: {
+          _id: 0,
+          name: "$_id",
+          value: { $multiply: ["$total", -1] },
+        },
+      },
     ])
     .toArray();
   if (data.length === 0) {

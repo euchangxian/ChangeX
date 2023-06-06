@@ -5,8 +5,12 @@ import { Box, LinearProgress } from "@mui/material";
 import { PieChart, Pie, Cell, Tooltip, Legend } from "recharts";
 
 export default function SpendingCategoryChart() {
-  const [isDataFetched, setIsDataFetched] = useState(false);
-  const [data, setData] = useState([]);
+  const [isDataFetched, setIsDataFetched] = useState(true);
+  const [data, setData] = useState([
+    { name: "Groceries", value: 400 },
+    { name: "Entertainment", value: 200 },
+    { name: "Transport", value: 300 },
+  ]);
   const [year, setYear] = useState(dayjs().year());
 
   const COLORS = [
@@ -32,22 +36,25 @@ export default function SpendingCategoryChart() {
     populateData(year).then(result => {
       setData(result);
       setIsDataFetched(true);
-      data.map(datum => console.log(datum));
     });
   }, [year]);
+
+  useEffect(() => {
+    console.log(data); // Log the data here
+  }, [data]); 
 
   return (
     <Box>
       <h1>Spending by Category</h1>
       {isDataFetched ? (
-        <PieChart width={400} height={400}>
+        <PieChart width={400} height={400} key={year}>
           <Pie
+            nameKey="name"
             dataKey="value"
-            isAnimationActive={false}
             data={data}
             cx="50%"
             cy="50%"
-            outerRadius={100}
+            outerRadius={125}
             fill="#8884d8"
             label
           >
