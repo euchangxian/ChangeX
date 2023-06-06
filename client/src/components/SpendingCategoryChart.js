@@ -39,10 +39,6 @@ export default function SpendingCategoryChart() {
     });
   }, [year]);
 
-  useEffect(() => {
-    console.log(data); // Log the data here
-  }, [data]); 
-
   return (
     <Box>
       <h1>Spending by Category</h1>
