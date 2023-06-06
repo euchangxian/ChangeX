@@ -13,6 +13,7 @@ import TransactionModal from "./TransactionModal";
 import NewTransactionModal from "./NewTransactionModal";
 import axios from "../apis/axios";
 import dayjs from "dayjs";
+import CategoryToIcon from "../apis/CategoryToIcon";
 
 export default function TransactionsList({ allTransactions, setAllTransactions }) {
   const fetchTransactions = async () => {
@@ -36,9 +37,7 @@ export default function TransactionsList({ allTransactions, setAllTransactions }
         <ListItem>
           <ListItemAvatar>
             <Avatar>
-              {transaction.category === "Entertainment" && <ImageIcon />}
-              {transaction.category === "Work" && <WorkIcon />}
-              {transaction.category === "Vacation" && <BeachAccessIcon />}
+              {CategoryToIcon(transaction.category)}
             </Avatar>
           </ListItemAvatar>
           <ListItemText
