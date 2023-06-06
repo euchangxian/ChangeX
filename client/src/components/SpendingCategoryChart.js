@@ -1,14 +1,27 @@
 import { useState, useEffect } from "react";
 import axios from "../apis/axios";
 import dayjs from "dayjs";
-import Box from "@mui/material/Box";
+import { Box, LinearProgress } from "@mui/material";
+import { PieChart, Pie, Cell, Tooltip, Legend } from "recharts";
 
 export default function SpendingCategoryChart() {
   const [isDataFetched, setIsDataFetched] = useState(false);
   const [data, setData] = useState([]);
   const [year, setYear] = useState(dayjs().year());
 
-  const populateData = async (year) => {
+  const COLORS = [
+    "#0088FE",
+    "#00C49F",
+    "#FFBB28",
+    "#FF8042",
+    "#AF19FF",
+    "#FF19A3",
+    "#19FF5A",
+    "#D1FF19",
+    "#FF5733",
+  ];
+
+  const populateData = async year => {
     const spendingByCategory = await axios.get(
       `/getspendingbycategory/${year}`
     );
@@ -17,16 +30,40 @@ export default function SpendingCategoryChart() {
 
   useEffect(() => {
     populateData(year).then(result => {
-        setData(result);
-        setIsDataFetched(true);
-        console.log(result);
-    })
+      setData(result);
+      setIsDataFetched(true);
+      data.map(datum => console.log(datum));
+    });
   }, [year]);
 
   return (
     <Box>
-      <h1>SpendingCategoryChart. Currently set data to be an array with objects (category, spending). If there are no entries, the array will be null. </h1>
-      <h1> Next step will be to display the data as a pie chart. </h1>
+      <h1>Spending by Category</h1>
+      {isDataFetched ? (
+        <PieChart width={400} height={400}>
+          <Pie
+            dataKey="value"
+            isAnimationActive={false}
+            data={data}
+            cx="50%"
+            cy="50%"
+            outerRadius={100}
+            fill="#8884d8"
+            label
+          >
+            {data.map((entry, index) => (
+              <Cell
+                key={`cell-${index}`}
+                fill={COLORS[index % COLORS.length]}
+              />
+            ))}
+          </Pie>
+          <Tooltip />
+          <Legend />
+        </PieChart>
+      ) : (
+        <LinearProgress />
+      )}
     </Box>
   );
 }
