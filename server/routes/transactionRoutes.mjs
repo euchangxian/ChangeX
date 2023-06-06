@@ -1,6 +1,6 @@
 import express from "express";
 import authJwt from "../middlewares/authJwt.mjs";
-import { addTransaction, getTransactions, getSpendingByMonthYear, deleteTransaction } from "../controllers/transactionController.mjs";
+import { addTransaction, getTransactions, getSpendingByMonthYear, deleteTransaction, getSpendingByCategoryInYear } from "../controllers/transactionController.mjs";
 
 const router = express.Router();
 
@@ -26,6 +26,12 @@ router.delete(
   "/transactions/:id",
   authJwt.verifyToken,
   deleteTransaction
+);
+
+router.get(
+  "/getspendingbycategory/:year",
+  authJwt.verifyToken,
+  getSpendingByCategoryInYear
 );
 
 
