@@ -9,14 +9,12 @@ import ListItem from "@mui/material/ListItem";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import ListItemText from "@mui/material/ListItemText";
-import ImageIcon from "@mui/icons-material/Image";
-import WorkIcon from "@mui/icons-material/Work";
-import BeachAccessIcon from "@mui/icons-material/BeachAccess";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Divider } from "@mui/material";
 import axios from "../apis/axios";
 import dayjs from "dayjs";
+import CategoryToIcon from "../apis/CategoryToIcon";
 
 export default function TransactionModal({ allTransactions, fetchTransactions }) {
   const [open, setOpen] = React.useState(false);
@@ -36,9 +34,7 @@ export default function TransactionModal({ allTransactions, fetchTransactions })
       <ListItem>
         <ListItemAvatar>
           <Avatar>
-            {transaction.category === "Entertainment" && <ImageIcon />}
-            {transaction.category === "Work" && <WorkIcon />}
-            {transaction.category === "Vacation" && <BeachAccessIcon />}
+            {CategoryToIcon(transaction.category)}
           </Avatar>
         </ListItemAvatar>
         <ListItemText

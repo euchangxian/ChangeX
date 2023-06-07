@@ -40,7 +40,7 @@ export default function BudgetSpendingChart() {
     populateData(year).then(result => {
       setData(result);
       setIsDataFetched(true);
-      console.log(result);
+      // console.log(result);
     });
   }, [year]);
 

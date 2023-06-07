@@ -4,15 +4,13 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
-import ImageIcon from "@mui/icons-material/Image";
-import WorkIcon from "@mui/icons-material/Work";
-import BeachAccessIcon from "@mui/icons-material/BeachAccess";
 import Divider from "@mui/material/Divider";
 import ListSubheader from "@mui/material/ListSubheader";
 import TransactionModal from "./TransactionModal";
 import NewTransactionModal from "./NewTransactionModal";
 import axios from "../apis/axios";
 import dayjs from "dayjs";
+import CategoryToIcon from "../apis/CategoryToIcon";
 
 export default function TransactionsList({ allTransactions, setAllTransactions }) {
   const fetchTransactions = async () => {
@@ -36,9 +34,7 @@ export default function TransactionsList({ allTransactions, setAllTransactions }
         <ListItem>
           <ListItemAvatar>
             <Avatar>
-              {transaction.category === "Entertainment" && <ImageIcon />}
-              {transaction.category === "Work" && <WorkIcon />}
-              {transaction.category === "Vacation" && <BeachAccessIcon />}
+              {CategoryToIcon(transaction.category)}
             </Avatar>
           </ListItemAvatar>
           <ListItemText
