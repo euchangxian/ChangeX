@@ -22,7 +22,7 @@ export default function NavBar(props) {
           </ListItemIcon>
           <ListItemText primary="Home" />
         </ListItemButton>
-        <ListItemButton component={Link} to="nopage">
+        <ListItemButton component={Link} to="analysis">
           <ListItemIcon>
             <BarChart />
           </ListItemIcon>

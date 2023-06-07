@@ -1,5 +1,6 @@
 import Auth from "./pages/Auth";
 import ChangeX from "./pages/ChangeX";
+import Analysis from "./pages/Analysis";
 import Home from "./pages/Home";
 import NoPage from "./pages/NoPage";
 import LoginForm from "./components/LoginForm";
@@ -20,8 +21,9 @@ export default function App() {
             <Route path="/login" element={<LoginForm />} />
             <Route path="signup" element={<SignUpForm />} />
           </Route>
-          <Route path="/changex" element={<ChangeX />} >
+          <Route path="/changex" element={<ChangeX />}>
             <Route path="/changex" element={<Home />} />
+            <Route path="/changex/analysis" element={<Analysis />} />
           </Route>
           <Route path="/*" element={<NoPage />} />
         </Routes>

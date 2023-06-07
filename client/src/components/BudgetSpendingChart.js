@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "../apis/axios";
 import dayjs from "dayjs";
-import Box from "@mui/material/Box";
 import {
   BarChart,
   Bar,
@@ -11,15 +10,25 @@ import {
   Tooltip,
   Legend,
 } from "recharts";
-import { LinearProgress } from "@mui/material";
-
+import {
+  Box,
+  LinearProgress,
+  Typography,
+  MenuItem,
+  Select,
+} from "@mui/material";
 export default function BudgetSpendingChart() {
   const [isDataFetched, setIsDataFetched] = useState(false);
   const [data, setData] = useState([]);
-  const [year, setYear] = useState(dayjs().year());
+  const [selectedYear, setSelectedYear] = useState(dayjs().year());
+  const yearRange = Array.from({ length: 7 }, (x, index) => dayjs().year() - 3 + index);
 
-  const populateData = async year => {
-    const janInYear = dayjs(new Date(year, 0));
+  const handleYearChange = (event) => {
+    setSelectedYear(event.target.value);
+  };
+
+  const populateData = async (selectedYear) => {
+    const janInYear = dayjs(new Date(selectedYear, 0));
     const dataTmp = [];
 
     for (let i = 0; i < 12; i++) {
@@ -37,12 +46,12 @@ export default function BudgetSpendingChart() {
   };
 
   useEffect(() => {
-    populateData(year).then(result => {
+    populateData(selectedYear).then((result) => {
       setData(result);
       setIsDataFetched(true);
       // console.log(result);
     });
-  }, [year]);
+  }, [selectedYear]);
 
   const chart = (
     <BarChart width={730} height={250} data={data}>
@@ -56,5 +65,19 @@ export default function BudgetSpendingChart() {
     </BarChart>
   );
 
-  return <Box>{isDataFetched ? chart : <LinearProgress />}</Box>;
+  return (
+    <Box>
+      <Box display="flex">
+        <Typography variant="h4">Spending/ Expenditure</Typography>
+        <Select value={selectedYear} onChange={handleYearChange}>
+          {yearRange.map((year) => (
+            <MenuItem key={year} value={year}>
+              {year}
+            </MenuItem>
+          ))}
+        </Select>
+      </Box>
+      <Box marginTop="10px">{isDataFetched ? chart : <LinearProgress />}</Box>
+    </Box>
+  );
 }

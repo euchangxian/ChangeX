@@ -18,11 +18,11 @@ const addTransaction = async (req, res) => {
       amount: amount,
       description: description,
     })
-    .then(result => {
+    .then((result) => {
       console.log("Transaction added successfully!");
       res.status(200).send({ message: `Transaction added successfully!` });
     })
-    .catch(error => {
+    .catch((error) => {
       console.log(error);
       res.status(500).send({ message: error });
     });
@@ -52,7 +52,8 @@ const getSpendingByMonthYear = async (req, res) => {
   const year = dateObj.getFullYear();
 
   const start = new Date(year, month, 1);
-  const end = new Date(year, month + 1, 1);
+  const end =
+    month < 11 ? new Date(year, month + 1, 1) : new Date(year + 1, 0, 1);
 
   const cursor = await db.transactions
     .aggregate([
@@ -125,10 +126,85 @@ const getSpendingByCategoryInYear = async (req, res) => {
   return res.status(200).send(data);
 };
 
+const getSpendingByCategoryInMonth = (userId, start, end) => {
+  return db.transactions
+    .aggregate([
+      {
+        $match: {
+          $and: [{ userId: userId }, { date: { $gte: start, $lt: end } }],
+        },
+      },
+      { $group: { _id: "$category", total: { $sum: "$amount" } } },
+      {
+        $project: {
+          _id: 0,
+          name: "$_id",
+          value: { $multiply: ["$total", -1] },
+        },
+      },
+    ])
+    .toArray();
+};
+
+const compareSpendingByCategory = async (req, res) => {
+  const { date } = req.params;
+  const { userId } = req.body;
+  const dateObj = new Date(date);
+  const currMonth = dateObj.getMonth();
+  const currYear = dateObj.getFullYear();
+
+  const prevMonthDate =
+    currMonth > 0
+      ? new Date(currYear, currMonth - 1)
+      : new Date(currYear - 1, 11);
+  const currMonthDate = new Date(currYear, currMonth);
+  const nextMonthDate =
+    currMonth < 11
+      ? new Date(currYear, currMonth + 1)
+      : new Date(currYear + 1, 0);
+
+  const prevMonthPromise = getSpendingByCategoryInMonth(
+    userId,
+    prevMonthDate,
+    currMonthDate
+  );
+  const currMonthPromise = getSpendingByCategoryInMonth(
+    userId,
+    currMonthDate,
+    nextMonthDate
+  );
+
+  const [prevMonthSpendingByCategory, currMonthSpendingByCategory] =
+    await Promise.all([prevMonthPromise, currMonthPromise]);
+
+  // Iterate through currMonthSpendingByCategory, and finds a matching category in prevMonthSpendingByCategory
+  // Then calculate the percentage change for that category and add to accumulator
+  // Returns accumulator
+  const categoryDelta = currMonthSpendingByCategory.reduce(
+    (accumulator, currCategory) => {
+      const matchingCategory = prevMonthSpendingByCategory.find(
+        (obj) => obj.name === currCategory.name
+      );
+      if (matchingCategory) {
+        const percentageChange =
+          ((currCategory.value - matchingCategory.value) /
+            matchingCategory.value) *
+          100;
+        accumulator.push({ name: currCategory.name, delta: percentageChange });
+      }
+      return accumulator;
+    },
+    []
+  );
+  console.log(categoryDelta);
+  return res.status(200).json(categoryDelta);
+};
+
 export {
   addTransaction,
   getTransactions,
   getSpendingByMonthYear,
   deleteTransaction,
   getSpendingByCategoryInYear,
+  compareSpendingByCategory,
 };
