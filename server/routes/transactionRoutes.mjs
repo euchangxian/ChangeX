@@ -1,6 +1,6 @@
 import express from "express";
 import authJwt from "../middlewares/authJwt.mjs";
-import { addTransaction, getTransactions, getSpendingByMonthYear, deleteTransaction, getSpendingByCategoryInYear } from "../controllers/transactionController.mjs";
+import { addTransaction, getTransactions, getSpendingByMonthYear, deleteTransaction, getSpendingByCategoryInYear, compareSpendingByCategory } from "../controllers/transactionController.mjs";
 
 const router = express.Router();
 
@@ -34,5 +34,10 @@ router.get(
   getSpendingByCategoryInYear
 );
 
+router.get(
+  "/comparespending/:date",
+  authJwt.verifyToken,
+  compareSpendingByCategory
+);
 
 export default router;
