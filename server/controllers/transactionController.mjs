@@ -196,7 +196,7 @@ const compareSpendingByCategory = async (req, res) => {
     },
     []
   );
-  console.log(categoryDelta);
+  // console.log(categoryDelta);
   return res.status(200).json(categoryDelta);
 };
 
