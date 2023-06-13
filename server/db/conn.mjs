@@ -27,8 +27,5 @@ const db = conn.db(dbName);
 db.users = db.collection("users");
 db.transactions = db.collection("transactions");
 db.budgets = db.collection("budgets");
-db.topics = db.collection("topics");
-db.threads = db.collection("threads");
-db.comments = db.collection("comments");
 
 export default db;
