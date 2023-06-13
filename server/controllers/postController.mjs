@@ -1,5 +1,4 @@
 import db from "../db/conn.mjs";
-import { ObjectId } from "mongodb";
 
 // Schema.
 // date - Date object, stored as ISO Date

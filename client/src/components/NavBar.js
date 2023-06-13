@@ -1,5 +1,5 @@
-import { Box, Drawer, SwipeableDrawer, Typography, List, ListItemButton, ListItemIcon, ListItemText, Divider } from "@mui/material";
-import { Home, BarChart, Flag } from "@mui/icons-material";
+import { Box, Drawer, SwipeableDrawer, Typography, List, ListItemButton, ListItemIcon, ListItemText, Divider} from "@mui/material";
+import { Home, BarChart, Flag, People } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 
 export default function NavBar(props) {
@@ -33,6 +33,13 @@ export default function NavBar(props) {
             <Flag />
           </ListItemIcon>
           <ListItemText primary="Goals" />
+        </ListItemButton>
+        <Divider variant="middle" />
+        <ListItemButton component={Link} to="friends">
+          <ListItemIcon>
+            <People />
+          </ListItemIcon>
+          <ListItemText primary="Friends" />
         </ListItemButton>
       </List>
     </Box>
