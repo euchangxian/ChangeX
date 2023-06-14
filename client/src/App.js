@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import NoPage from "./pages/NoPage";
 import LoginForm from "./components/LoginForm";
 import SignUpForm from "./components/SignUpForm";
+import Friends from "./pages/Friends";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -24,6 +25,7 @@ export default function App() {
           <Route path="/changex" element={<ChangeX />}>
             <Route path="/changex" element={<Home />} />
             <Route path="/changex/analysis" element={<Analysis />} />
+            <Route path="/changex/friends" element={<Friends />} />
           </Route>
           <Route path="/*" element={<NoPage />} />
         </Routes>

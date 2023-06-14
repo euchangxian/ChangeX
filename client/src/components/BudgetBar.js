@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState, useEffect } from "react";
 import LinearProgress from "@mui/material/LinearProgress";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
@@ -12,17 +12,17 @@ export default function BudgetBar({ allTransactions }) {
   const currentDate = dayjs();
   const datePct = new Date().getDate() / 30;
 
-  const [budget, setBudget] = React.useState(0);
-  const [spending, setSpending] = React.useState([]);
-  const [onTrackPct, setOnTrackPct] = React.useState(0);
-  const [budgetInput, setBudgetInput] = React.useState("");
+  const [budget, setBudget] = useState(0);
+  const [spending, setSpending] = useState([]);
+  const [onTrackPct, setOnTrackPct] = useState(0);
+  const [budgetInput, setBudgetInput] = useState("");
 
-  const handleInputChange = event => {
+  const handleInputChange = (event) => {
     const value = event.target.value;
     setBudgetInput(value);
   };
 
-  const handleSubmit = event => {
+  const handleSubmit = (event) => {
     event.preventDefault();
     const newBudget = parseInt(budgetInput);
     if (
@@ -48,12 +48,12 @@ export default function BudgetBar({ allTransactions }) {
     const date = currentDate;
     await axios
       .get(`/getspending/${date}`)
-      .then(result => {
+      .then((result) => {
         if (result.status === 200) {
           setSpending(-result.data);
         }
       })
-      .catch(error => {
+      .catch((error) => {
         toast.error("Failed to get spending!");
       });
   };
@@ -62,47 +62,47 @@ export default function BudgetBar({ allTransactions }) {
     const date = currentDate;
     await axios
       .get(`/getbudget/${date}`)
-      .then(result => {
+      .then((result) => {
         if (result.status === 200) {
           setBudget(result.data);
         }
       })
-      .catch(error => {
+      .catch((error) => {
         toast.error("Failed to get budget!");
       });
   };
 
-  const addBudget = async amount => {
+  const addBudget = async (amount) => {
     const date = currentDate;
     await axios
       .post(`/addbudget`, {
         date: date,
         amount: amount,
       })
-      .then(result => {
+      .then((result) => {
         getBudget();
       });
   };
 
-  const updateBudget = async amount => {
+  const updateBudget = async (amount) => {
     const date = currentDate;
     await axios
       .post(`/updatebudget/${date}`, { newAmount: amount })
-      .then(result => {
+      .then((result) => {
         getBudget();
       });
     setBudgetInput("");
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     getBudget();
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     fetchSpendingByMonthYear();
   }, [allTransactions]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     setOnTrackPct((100 * (spending / budget)) / datePct);
   }, [spending, budget]);
 
@@ -163,7 +163,7 @@ export default function BudgetBar({ allTransactions }) {
                     marginRight: "-13px", // Adjust this value to align the button
                   }}
                 >
-                  <IconButton>
+                  <IconButton type="submit">
                     <PublishIcon />
                   </IconButton>
                 </InputAdornment>

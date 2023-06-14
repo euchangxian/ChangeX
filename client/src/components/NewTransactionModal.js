@@ -96,8 +96,8 @@ export default function NewTransactionModal() {
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            height: 620,
-            width: 620,
+            height: 600,
+            width: 450,
             bgcolor: "background.paper",
             border: "2px solid #000",
             boxShadow: 24,
@@ -145,14 +145,14 @@ export default function NewTransactionModal() {
                 defaultValue={dayjs(new Date())}
                 slotProps={{
                   textField: {
-                    helperText: "DD/MM/YYYY"
-                  }
+                    helperText: "DD/MM/YYYY",
+                  },
                 }}
                 onChange={handleDate}
               />
             </div>
             {/* div to select transaction category */}
-            <div style={{ display: "flex", alignItems: "center" }}>
+            <div style={{ alignItems: "center" }}>
               <Typography sx={{ marginRight: "20px" }}>
                 Transaction Category:
               </Typography>
@@ -161,7 +161,7 @@ export default function NewTransactionModal() {
                 value={category}
                 required
                 select
-                sx={{ flexGrow: 1 }}
+                sx={{ flexGrow: 1, width: "80%" }}
                 onChange={(event) => {
                   setCategory(event.target.value);
                 }}
@@ -174,7 +174,7 @@ export default function NewTransactionModal() {
               </TextField>
             </div>
             {/* div to input transaction description */}
-            <div style={{ display: "flex", alignItems: "center" }}>
+            <div style={{ alignItems: "center" }}>
               <Typography sx={{ marginRight: "5px" }}>
                 Transaction Description:
               </Typography>
@@ -183,27 +183,33 @@ export default function NewTransactionModal() {
                 variant="outlined"
                 value={description}
                 required
-                sx={{ flexGrow: 1 }}
+                sx={{ flexGrow: 1, width: "80%" }}
                 onChange={(event) => {
                   setDescription(event.target.value);
                 }}
               />
             </div>
             {/* div to input amount. can only input up to 2 decimal points */}
-            <div style={{ display: "flex", alignItems: "center" }}>
+            <div style={{ alignItems: "center" }}>
               <Typography sx={{ marginRight: "120px" }}>Amount:</Typography>
               <TextField
                 id="amount"
                 variant="outlined"
                 value={amount}
                 required
-                sx={{ flexGrow: 1 }}
+                sx={{ flexGrow: 1, width: "80%" }}
                 onChange={(event) => {
                   setAmount(handleDecimalsOnValue(event.target.value));
                 }}
               />
             </div>
-            <div style={{ marginTop: 20, display: "flex", justifyContent: "center" }}>
+            <div
+              style={{
+                marginTop: 20,
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
               <Button type="submit" variant="contained" color="primary">
                 Add Transaction
               </Button>

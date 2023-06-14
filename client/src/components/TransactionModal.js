@@ -9,33 +9,67 @@ import ListItem from "@mui/material/ListItem";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import ListItemText from "@mui/material/ListItemText";
-import EditIcon from "@mui/icons-material/Edit";
+import ShareIcon from "@mui/icons-material/Share";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Divider } from "@mui/material";
 import axios from "../apis/axios";
 import dayjs from "dayjs";
 import CategoryToIcon from "../apis/CategoryToIcon";
+import { toast } from "react-toastify";
 
-export default function TransactionModal({ allTransactions, fetchTransactions }) {
+const toastConfig = {
+  position: "top-center",
+  autoClose: 2000,
+  hideProgressBar: false,
+  closeOnClick: true,
+  pauseOnHover: true,
+  draggable: true,
+  progress: undefined,
+  theme: "colored",
+};
+
+export default function TransactionModal({
+  allTransactions,
+  fetchTransactions,
+}) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   const handleDeleteTransaction = async (id) => {
-    await axios.delete(
-      `/transactions/${id}`
-    ).then(res => {
+    await axios.delete(`/transactions/${id}`).then((res) => {
       fetchTransactions();
     });
+  };
+
+  const handleSharePost = async (transaction) => {
+    const username = (await axios.get("/user")).data;
+    const body =
+      username +
+      " spent $" +
+      -transaction.amount +
+      " on " +
+      transaction.description +
+      ". (" +
+      transaction.category +
+      ")";
+    await axios
+      .post("/addpost", {
+        date: new Date(),
+        transactionId: transaction._id,
+        body: body,
+      })
+      .then((res) => {
+        toast.success("🦄 Successfully shared with friends!", toastConfig);
+        console.log(res);
+      });
   };
 
   const allTransactionsDisplay = allTransactions.map((transaction) => (
     <div key={transaction._id}>
       <ListItem>
         <ListItemAvatar>
-          <Avatar>
-            {CategoryToIcon(transaction.category)}
-          </Avatar>
+          <Avatar>{CategoryToIcon(transaction.category)}</Avatar>
         </ListItemAvatar>
         <ListItemText
           primary={transaction.description}
@@ -44,15 +78,23 @@ export default function TransactionModal({ allTransactions, fetchTransactions })
               <span>{dayjs(transaction.date).format("ddd, DD MMM YYYY")}</span>
               <br />
               <span style={{ color: transaction.amount < 0 ? "red" : "green" }}>
-                {`${transaction.amount < 0 ? '-' : ''}$${Math.abs(transaction.amount)}`}
+                {`${transaction.amount < 0 ? "-" : ""}$${Math.abs(
+                  transaction.amount
+                )}`}
               </span>
             </>
           }
         />
-        <IconButton aria-label="edit">
-          <EditIcon />
+        <IconButton
+          aria-label="share"
+          onClick={() => handleSharePost(transaction)}
+        >
+          <ShareIcon />
         </IconButton>
-        <IconButton aria-label="delete" onClick={() => handleDeleteTransaction(transaction._id)}>
+        <IconButton
+          aria-label="delete"
+          onClick={() => handleDeleteTransaction(transaction._id)}
+        >
           <DeleteIcon />
         </IconButton>
       </ListItem>
@@ -85,7 +127,9 @@ export default function TransactionModal({ allTransactions, fetchTransactions })
             flexDirection: "column",
           }}
         >
-          <div style={{ display: "flex", alignItems: "center", marginTop: -20 }}>
+          <div
+            style={{ display: "flex", alignItems: "center", marginTop: -20 }}
+          >
             <h2 style={{ flexGrow: 1 }}>All Transactions</h2>
             <IconButton
               aria-label="delete"

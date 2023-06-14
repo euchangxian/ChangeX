@@ -12,7 +12,8 @@ const signup = (req, res) => {
   const hashed = bcrypt.hashSync(password, saltRounds);
   const newUser = {
     username: username,
-    password: hashed
+    password: hashed,
+    friends: []
   };
   db.users.insertOne(newUser).then(result => {
     console.log(`User ${newUser.username} registered successfully!`);
