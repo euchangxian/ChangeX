@@ -22,7 +22,7 @@ export default function TopBar(props) {
 
   useEffect(() => {
     fetchUser();
-  });
+  }, []);
 
   const navigate = useNavigate();
   const handleLogoutButtonClick = async () => {
