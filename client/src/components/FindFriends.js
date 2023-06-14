@@ -11,10 +11,36 @@ import {
   ListItemText,
 } from "@mui/material";
 import { Add, Search } from "@mui/icons-material";
+import { toast } from "react-toastify";
+
+const toastConfig = {
+  position: "top-center",
+  autoClose: 2000,
+  hideProgressBar: false,
+  closeOnClick: true,
+  pauseOnHover: true,
+  draggable: true,
+  progress: undefined,
+  theme: "colored",
+};
 
 export default function FindFriends() {
   const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+    const [username, setUsername] = useState();
+
+  const fetchUser = async () => {
+    console.log("Fetching user...");
+    await axios.get(
+      "/user"
+    ).then(res => {
+      setUsername(res.data);
+    });
+  }
+
+  useEffect(() => {
+    fetchUser();
+  }, []);
 
   const getAllUsers = async () => {
     try {
@@ -37,14 +63,35 @@ export default function FindFriends() {
     .filter((user) => user.username.toLowerCase().includes(searchTerm))
     .slice(0, 5);
 
-  const displayedUsers = filteredUsers.map((user) => (
+  const handleAddFriend = async (friendId) => {
+    const isFriend = await axios.get(`/checkfriend/${friendId}`);
+    if (isFriend.data === true) {
+      toast.info("You are already friends!");
+      return;
+    }
+    axios
+      .post("/addfriend", {
+        friendId: friendId,
+      })
+      .then((res) => {
+        toast.success("🦄 Successfully added friend!", toastConfig);
+        console.log(res);
+      });
+  };
+
+const displayedUsers = filteredUsers
+  .filter((user) => user.username !== username) // Exclude user with matching username
+  .map((user) => (
     <div key={user._id}>
       <ListItem>
         <ListItemAvatar>
           <Avatar />
         </ListItemAvatar>
         <ListItemText primary={user.username} />
-        <IconButton aria-label="add friend">
+        <IconButton
+          aria-label="add friend"
+          onClick={() => handleAddFriend(user._id)}
+        >
           <Add />
         </IconButton>
       </ListItem>
