@@ -16,6 +16,35 @@ const getUsers = async (req, res) => {
   }
 };
 
+const getFriendsList = async (req, res) => {
+  const { userId } = req.body;
+  try {
+    const result = await db.users.findOne(
+      {
+        _id: new ObjectId(userId),
+      },
+      { friends: 1, _id: 0 } // Returns only the friends array
+    );
+
+    if (!result || !result.friends) {
+      return res.status(200).json([]);
+    }
+
+    const friendsIds = result.friends.map(stringId => new ObjectId(stringId));
+    const friends = await db.users
+      .find(
+        { _id: { $in: friendsIds } },
+        { projection: { password: 0 } } // specify projection in an options object
+      )
+      .toArray();
+
+    return res.status(200).json(friends);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ message: error });
+  }
+};
+
 const checkFriend = async (req, res) => {
   const { friendId } = req.params;
   const { userId } = req.body;
@@ -23,7 +52,7 @@ const checkFriend = async (req, res) => {
     .findOne({
       $and: [{ _id: new ObjectId(userId) }, { friends: friendId }],
     })
-    .then((result) => {
+    .then(result => {
       if (result) {
         console.log("true");
         res.status(200).json(true);
@@ -32,7 +61,7 @@ const checkFriend = async (req, res) => {
         res.status(200).json(false);
       }
     })
-    .catch((error) => {
+    .catch(error => {
       console.log(error);
       res.status(500).send({ message: error });
     });
@@ -48,14 +77,14 @@ const addFriend = async (req, res) => {
       },
       { $push: { friends: friendId } }
     )
-    .then((result) => {
+    .then(result => {
       console.log("Friend added successfully!");
       res.status(200).send({ message: `Friend added successfully!` });
     })
-    .catch((error) => {
+    .catch(error => {
       console.log(error);
       res.status(500).send({ message: error });
     });
 };
 
-export { getUsers, checkFriend, addFriend };
+export { getUsers, getFriendsList, checkFriend, addFriend };
