@@ -163,7 +163,7 @@ export default function BudgetBar({ allTransactions }) {
                     marginRight: "-13px", // Adjust this value to align the button
                   }}
                 >
-                  <IconButton>
+                  <IconButton type="submit">
                     <PublishIcon />
                   </IconButton>
                 </InputAdornment>
