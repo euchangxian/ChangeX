@@ -41,6 +41,12 @@ export default function NavBar(props) {
           </ListItemIcon>
           <ListItemText primary="Friends" />
         </ListItemButton>
+        <ListItemButton component={Link} to="feed">
+          <ListItemIcon>
+            <People />
+          </ListItemIcon>
+          <ListItemText primary="Feed" />
+        </ListItemButton>
       </List>
     </Box>
   );
