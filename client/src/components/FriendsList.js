@@ -26,7 +26,7 @@ export default function FriendsList() {
   const renderFriendsList = friendsList.map(friend => {
     return (
       <>
-        <ListItem key={friend._id} alignItems="flex-start">
+        <ListItem key={friend._id}>
           <ListItemAvatar>
             <Avatar />
           </ListItemAvatar>
