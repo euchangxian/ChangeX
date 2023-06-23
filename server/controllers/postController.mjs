@@ -48,7 +48,7 @@ const getNextPosts = async (req, res) => {
 
 
   db.posts
-    .find({ userId: { $in: friendIds } })
+    .find({ $or: [{ userId: { $in: friendIds } }, { userId: userId }] })
     .sort({ date: -1 })
     .skip((pageNumber - 1) * limit)
     .limit(Number(limit))
