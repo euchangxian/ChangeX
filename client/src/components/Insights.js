@@ -24,7 +24,7 @@ export default function Insights() {
 
   useEffect(() => {
     getInsights();
-  }, );
+  }, []);
 
   const insightsList = data.map((insight) => {
     if (insight.delta > 10) {

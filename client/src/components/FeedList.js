@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import axios from "../apis/axios";
+import Post from "./Post"
 
-function FeedList() {
+export default function FeedList() {
   const [pageNumber, setPageNumber] = useState(1);
   const limit = 6;
 
@@ -19,6 +20,7 @@ function FeedList() {
         .then((result) => {
           setFeedItems((prevItems) => [...prevItems, ...result.data]);
           setHasMore(result.data.length > 0);
+          console.log(result.data);
           setLoading(false);
         })
         .catch((e) => {
@@ -46,17 +48,20 @@ function FeedList() {
   );
 
   return (
-    <div style={{ height: "100px" }}>
+    <div>
       {feedItems.map((item, index) => {
         if (feedItems.length === index + 1) {
           return (
             <div ref={lastElementRef} key={item._id}>
-              {" "}
-              {item.body}{" "}
+              <Post post={item} />
             </div>
           );
         } else {
-          return <div key={item._id}>{item.body}</div>;
+          return (
+            <div key={item._id}>
+              <Post post={item} />
+            </div>
+          );
         }
       })}
       <div>{loading && "Loading..."}</div>
@@ -64,5 +69,3 @@ function FeedList() {
     </div>
   );
 }
-
-export default FeedList;
