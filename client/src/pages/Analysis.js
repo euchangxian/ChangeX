@@ -8,8 +8,10 @@ export default function Analysis() {
     <Container maxWidth="lg">
       <Box>
         <BudgetSpendingChart />
+        <Box display="flex">
         <SpendingCategoryChart />
         <Insights />
+        </Box>
       </Box>
     </Container>
   );

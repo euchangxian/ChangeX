@@ -76,11 +76,17 @@ export default function Insights() {
             id="list-header"
             sx={{ fontSize: "28px", color: "black" }}
           >
-            Latest Transactions
+            Insights
           </ListSubheader>
         }
       >
-        {insightsList}
+        {insightsList.length ? (
+          insightsList
+        ) : (
+          <ListItem>
+            <ListItemText primary="No insights currently" />
+          </ListItem>
+        )}
       </List>
     </Box>
   );

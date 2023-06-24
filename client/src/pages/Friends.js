@@ -1,13 +1,14 @@
 import FindFriends from "../components/FindFriends";
 import FriendsList from "../components/FriendsList";
-import FeedComponent from "../components/FeedList";
+import { Box, Container } from "@mui/material";
 
 export default function Friends() {
   return (
-    <>
-      <FriendsList />
-      <FindFriends />
-      <FeedComponent />
-    </>
+    <Container maxWidth="lg">
+      <Box display="flex">
+        <FriendsList />
+        <FindFriends />
+      </Box>
+    </Container>
   );
 }
