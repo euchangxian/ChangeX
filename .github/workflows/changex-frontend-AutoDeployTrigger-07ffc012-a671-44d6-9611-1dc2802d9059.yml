@@ -1,0 +1,42 @@
+name: Trigger auto deployment for changex-frontend
+
+# When this action will be executed
+on:
+  # Automatically trigger it when detected changes in repo
+  push:
+    branches: 
+      [ deploy ]
+    paths:
+    - '**'
+    - '.github/workflows/changex-frontend-AutoDeployTrigger-07ffc012-a671-44d6-9611-1dc2802d9059.yml'
+
+  # Allow mannually trigger 
+  workflow_dispatch:
+      
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout to the branch
+        uses: actions/checkout@v2
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.CHANGEXFRONTEND_AZURE_CREDENTIALS }}
+
+      - name: Build and push container image to registry
+        uses: azure/container-apps-deploy-action@v1
+        with:
+          appSourcePath: ${{ github.workspace }} 
+          registryUrl: changex.azurecr.io
+          registryUsername: ${{ secrets.CHANGEXFRONTEND_REGISTRY_USERNAME }}
+          registryPassword: ${{ secrets.CHANGEXFRONTEND_REGISTRY_PASSWORD }}
+          containerAppName: changex-frontend
+          resourceGroup: ChangeX
+          imageToBuild: changex.azurecr.io/changex-frontend:${{ github.sha }}
+          
+
+     
+
