@@ -7,13 +7,13 @@ import authRoutes from "./routes/authRoutes.mjs";
 import transactionRoutes from "./routes/transactionRoutes.mjs";
 import budgetRoutes from "./routes/budgetRoutes.mjs";
 import postRoutes from "./routes/postRoutes.mjs";
-import friendsRoutes from "./routes/friendsRoutes.mjs"
+import friendsRoutes from "./routes/friendsRoutes.mjs";
 
 const PORT = process.env.PORT || 5050;
 const app = express();
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: process.env.FRONTEND_URL,
     credentials: true,
     optionsSuccessStatus: 200,
   })

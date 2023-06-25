@@ -1,20 +1,12 @@
-# Use an official Node.js runtime as the base image
-FROM node:18
-
-# Set the working directory in the container to /app
+FROM node:18 as build
 WORKDIR /app
-
-# Copy package.json and package-lock.json into the directory
 COPY package*.json ./
-
-# Install the application dependencies
 RUN npm install
-
-# Copy the rest of the application code into the container
 COPY . .
+RUN npm run build
 
-# Expose port 3000 for the application
-EXPOSE 3000
-
-# Define the command to run the application
-CMD [ "npm", "start" ]
+FROM nginx:1.21
+COPY --from=build /app/build /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
