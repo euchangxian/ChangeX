@@ -10,20 +10,20 @@ import {
   Avatar,
 } from "@mui/material";
 
-export default function FriendsList() {
+export default function FriendsList({ refreshFriendsList }) {
   const [friendsList, setFriendsList] = useState([]);
 
   const fetchFriendsList = async () => {
-    await axios.get("getfriendslist").then(result => {
+    await axios.get("getfriendslist").then((result) => {
       setFriendsList(result.data);
     });
   };
 
   useEffect(() => {
     fetchFriendsList();
-  }, []);
+  }, [refreshFriendsList]);
 
-  const renderFriendsList = friendsList.map(friend => {
+  const renderFriendsList = friendsList.map((friend) => {
     return (
       <>
         <ListItem key={friend._id}>
