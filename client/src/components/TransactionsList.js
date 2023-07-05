@@ -5,14 +5,17 @@ import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import Divider from "@mui/material/Divider";
-import ListSubheader from "@mui/material/ListSubheader";
 import TransactionModal from "./TransactionModal";
 import NewTransactionModal from "./NewTransactionModal";
 import axios from "../apis/axios";
 import dayjs from "dayjs";
 import CategoryToIcon from "../apis/CategoryToIcon";
+import { Typography } from "@mui/material";
 
-export default function TransactionsList({ allTransactions, setAllTransactions }) {
+export default function TransactionsList({
+  allTransactions,
+  setAllTransactions,
+}) {
   const fetchTransactions = async () => {
     await axios
       .get(
@@ -30,60 +33,64 @@ export default function TransactionsList({ allTransactions, setAllTransactions }
   const firstFiveTransactions = allTransactions
     .slice(0, 5)
     .map((transaction) => (
-      <div key={transaction._id}>
-        <ListItem>
+      <div key={transaction._id} style={{ width: "100%" }}>
+        <ListItem style={{ display: "flex", alignItems: "center" }}>
           <ListItemAvatar>
-            <Avatar>
-              {CategoryToIcon(transaction.category)}
-            </Avatar>
+            <Avatar>{CategoryToIcon(transaction.category)}</Avatar>
           </ListItemAvatar>
-          <ListItemText
-            primary={transaction.description}
-            secondary={dayjs(transaction.date).format("ddd, DD MMM YYYY")}
-          />
-          <ListItemText
-            primaryTypographyProps={{
-              style: {
-                textAlign: "right",
-                color: transaction.amount < 0 ? "red" : "green",
-              },
-            }}
-            primary={`${transaction.amount < 0 ? "-" : ""}$${Math.abs(
-              transaction.amount
-            )}`}
-          />
+          <div style={{ display: "flex", flex: 1 }}>
+            <div style={{ flex: 3 }}>
+              <ListItemText primary={transaction.description} />
+            </div>
+            <div style={{ flex: 1 }}>
+              <ListItemText
+                primary={dayjs(transaction.date).format(
+                  "ddd, DD MMM YYYY,  HH:mm:ss"
+                )}
+              />
+            </div>
+            <div style={{ flex: 1 }}>
+              <ListItemText
+                primaryTypographyProps={{
+                  style: {
+                    textAlign: "right",
+                    color: transaction.amount < 0 ? "red" : "green",
+                  },
+                }}
+                primary={`${transaction.amount < 0 ? "-" : ""}$${Math.abs(
+                  transaction.amount
+                )}`}
+              />
+            </div>
+          </div>
         </ListItem>
+
         <Divider variant="inset" component="li" />
       </div>
     ));
 
   return (
-    <List
-      sx={{
-        width: "100%",
-        maxWidth: 360,
-        bgcolor: "background.paper",
-      }}
-      subheader={
-        <ListSubheader
-          component="div"
-          id="list-header"
-          sx={{ fontSize: "28px", color: "black" }}
-        >
-          Latest Transactions
-        </ListSubheader>
-      }
-    >
-      <ListItem>
-        <NewTransactionModal />
-      </ListItem>
-      {firstFiveTransactions}
-      <ListItem sx={{ justifyContent: "center" }}>
-        <TransactionModal
-          allTransactions={allTransactions}
-          fetchTransactions={fetchTransactions}
-        />
-      </ListItem>
-    </List>
+    <>
+      <Typography variant="h4" color="black">
+        Latest Transactions
+      </Typography>
+      <List
+        sx={{
+          width: "100%",
+          backgroundColor: "paleblue",
+        }}
+      >
+        <ListItem>
+          <NewTransactionModal />
+        </ListItem>
+        {firstFiveTransactions}
+        <ListItem sx={{ justifyContent: "center" }}>
+          <TransactionModal
+            allTransactions={allTransactions}
+            fetchTransactions={fetchTransactions}
+          />
+        </ListItem>
+      </List>
+    </>
   );
 }

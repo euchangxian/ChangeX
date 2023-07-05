@@ -3,11 +3,11 @@ import axios from "../apis/axios";
 import {
   Divider,
   List,
-  ListSubheader,
   ListItem,
   ListItemText,
   ListItemAvatar,
   Avatar,
+  Typography,
 } from "@mui/material";
 
 export default function FriendsList({ refreshFriendsList }) {
@@ -38,23 +38,16 @@ export default function FriendsList({ refreshFriendsList }) {
   });
 
   return (
+    <>
+    <Typography variant="h4" color="black">Followed users</Typography>
     <List
       sx={{
         width: "100%",
-        maxWidth: 360,
-        bgcolor: "background.paper",
+        backgroundColor: "paleblue",
       }}
-      subheader={
-        <ListSubheader
-          component="div"
-          id="list-header"
-          sx={{ fontSize: "28px", color: "black" }}
-        >
-          Your Friends
-        </ListSubheader>
-      }
     >
       {renderFriendsList}
     </List>
+    </>
   );
 }
