@@ -42,9 +42,12 @@ export default function TransactionModal({
     });
   };
 
-  const handleSharePost = async (transaction) => {
-    const username = (await axios.get("/user")).data;
-    const body =
+const handleSharePost = async (transaction) => {
+  const username = (await axios.get("/user")).data;
+  let body = "";
+
+  if (transaction.amount < 0) {
+    body =
       username +
       " spent $" +
       -transaction.amount +
@@ -53,17 +56,30 @@ export default function TransactionModal({
       ". (" +
       transaction.category +
       ")";
-    await axios
-      .post("/addpost", {
-        date: new Date(),
-        transactionId: transaction._id,
-        body: body,
-      })
-      .then((res) => {
-        toast.success("🦄 Successfully shared with friends!", toastConfig);
-        console.log(res);
-      });
-  };
+  } else {
+    body =
+      username +
+      " received $" +
+      transaction.amount +
+      " from " +
+      transaction.description +
+      ". (" +
+      transaction.category +
+      ")";
+  }
+
+  await axios
+    .post("/addpost", {
+      date: new Date(),
+      transactionId: transaction._id,
+      body: body,
+    })
+    .then((res) => {
+      toast.success("🦄 Successfully shared with followers!", toastConfig);
+      console.log(res);
+    });
+};
+
 
   const allTransactionsDisplay = allTransactions.map((transaction) => (
     <div key={transaction._id}>
